@@ -1,0 +1,33 @@
+Primitives:
+
+n d - Day Constraint
+(n...m)d
+
+n m - Month Constraint
+(n...m)m
+n y - Year Constraint
+(n...m)y Year List
+
+n w - Day of Week
+y,m,d@ - Date
+y,m,d@2i - Every other day starting at day
+0,2i     - Every other day, no anchor
+
+LOGIC
+[...]a   AND
+[...]o   OR
+n    
+
+[1d2m2008y]a  - On a given date
+[1d2m]a       - On a day, any year
+[2m2008y]a    - In Feb of 2008
+
+DAY OF WEEK
+[0,2,3]w
+
+DAY OF MONTH
+[1,15]m       
+
+DAY INTERVAL
+2008,2,15@2i  (anchored)
+0,2i          (unanchored)
