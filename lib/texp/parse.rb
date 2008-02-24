@@ -42,6 +42,23 @@ module TExp
       @stack.pop
     end
 
+    def from_params(hash)
+      h = hash['1']
+      tok = h['type']
+      cb = PARSE_CALLBACKS[tok]
+      a1 = h["#{tok}1"]
+      a2 = h["#{tok}2"]
+      if a2
+        cb.new(a1, a2)
+      elsif a1
+        cb.new(a1)
+      else
+        cb.new
+      end
+    end
+    
+    private
+
     # Compile the token into the current definition.
     def compile(tok)
       handler = PARSE_CALLBACKS[tok]

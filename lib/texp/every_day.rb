@@ -14,6 +14,10 @@ module TExp
       codes << 'e'
     end
 
+    def to_hash
+      { 'type' => 'e' }
+    end
+
     class << self
       def parse_callback(stack)
         stack.push TExp::EveryDay.new

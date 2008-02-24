@@ -1,6 +1,6 @@
 module TExp
   class DayOfMonth < Base
-    register_parse_callback('d', self)
+    register_parse_callback('d')
 
     def initialize(days)
       @days = listize(days)
@@ -18,6 +18,10 @@ module TExp
     def encode(codes)
       encode_list(codes, @days)
       codes << 'd'
+    end
+
+    def to_hash
+      { "type" => 'd', 'd1' => @days.map { |d| d.to_s } }
     end
   end
 end

@@ -24,6 +24,10 @@ module TExp
       codes << ',' << @interval << 'i'
     end
 
+    def to_hash
+      { "type" => "i", "i1" => @base_date.to_s, "i2" => @interval.to_s }
+    end
+
     private
 
     def base_mjd

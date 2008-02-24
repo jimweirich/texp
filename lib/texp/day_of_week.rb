@@ -15,6 +15,10 @@ module TExp
         humanize_list(@days) { |d| Date::DAYNAMES[d] }
     end
 
+    def to_hash
+      { "type" => 'w', 'w1' => @days.map { |item| item.to_s } }
+    end
+
     def encode(codes)
       encode_list(codes, @days)
       codes << 'w'

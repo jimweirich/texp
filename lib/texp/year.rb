@@ -18,5 +18,9 @@ module TExp
       encode_list(codes, @years)
       codes << 'y'
     end
+    
+    def to_hash
+      { 'type' => 'y', 'y1' => @years.map { |y| y.to_s } }
+    end
   end
 end

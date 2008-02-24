@@ -22,6 +22,10 @@ module TExp
       "it is the " + ordinal_list(@weeks) + " week of the month"
     end
 
+    def to_hash
+      { 'type' => 'k', 'k1' => @weeks.map { |w| w.to_s } }
+    end
+
     private
 
     def week_from_front(date)

@@ -19,5 +19,9 @@ module TExp
       encode_list(codes, @months)
       codes << 'm'
     end
+
+    def to_hash
+      { "type" => 'm', 'm1' => @months.map { |m| m.to_s } }
+    end
   end
 end
