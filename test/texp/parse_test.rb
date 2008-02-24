@@ -21,6 +21,14 @@ class TExpParseLexicalTest < Test::Unit::TestCase
     assert_lex "1,23,4", '1', '23', '4'
   end
 
+  def test_positive_numbers
+    assert_lex "+1,23,+4", '+1', '23', '+4'
+  end
+
+  def test_negative_numbers
+    assert_lex "-1,23,-4", '-1', '23', '-4'
+  end
+
   def test_punctuation
     assert_lex "[@]()|&", '[', '@', ']', '(', ')', '|', '&'
   end
@@ -30,7 +38,7 @@ class TExpParseLexicalTest < Test::Unit::TestCase
   end
 
   def test_bad_dates
-    assert_lex "2008-2-14", "2008", "-", "2", "-", "14"
+    assert_lex "2008-2-14", "2008", "-2", "-14"
   end
 
   def test_extension_tokens
@@ -199,6 +207,9 @@ class ParseReverseTest < Test::Unit::TestCase
     assert_round_trip("14do")
     assert_round_trip("[]o")
     assert_round_trip("e")
+    assert_round_trip("1k")
+    assert_round_trip("[1,2]k")
+    assert_round_trip("[1,2,-1]k")
   end
 
   private

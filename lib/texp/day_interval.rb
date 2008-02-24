@@ -11,6 +11,14 @@ module TExp
       ((date.mjd - base_mjd) % @interval) == 0
     end
 
+    def inspect
+      if @interval == 1
+        "every day starting on #{humanize_date(@base_date)}"
+      else
+        "every #{ordinal(@interval)} day starting on #{humanize_date(@base_date)}"
+      end
+    end
+
     def encode(codes)
       encode_date(codes, @base_date)
       codes << ',' << @interval << 'i'

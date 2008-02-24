@@ -10,6 +10,11 @@ module TExp
       @months.include?(date.month)
     end
 
+    def inspect
+      "the month is " +
+        humanize_list(@months) { |m| Date::MONTHNAMES[m] }
+    end
+
     def encode(codes)
       encode_list(codes, @months)
       codes << 'm'

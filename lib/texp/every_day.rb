@@ -6,6 +6,10 @@ module TExp
       true
     end
 
+    def inspect
+      "every day"
+    end
+
     def encode(codes)
       codes << 'e'
     end

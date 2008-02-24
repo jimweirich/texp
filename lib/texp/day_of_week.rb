@@ -10,6 +10,11 @@ module TExp
       @days.include?(date.wday)
     end
 
+    def inspect
+      "the day of the week is " +
+        humanize_list(@days) { |d| Date::DAYNAMES[d] }
+    end
+
     def encode(codes)
       encode_list(codes, @days)
       codes << 'w'

@@ -2,6 +2,8 @@
 
 require 'rake/clean'
 require 'rake/testtask'
+require 'rake/rdoctask'
+require 'rake/gempackagetask'
 
 task :default => "test:units"
 
@@ -28,3 +30,57 @@ end
 
 desc "Generate the TAGS file"
 task :tags => ["tags:emacs"]
+
+
+# RDoc Task
+rd = Rake::RDocTask.new("rdoc") { |rdoc|
+  rdoc.rdoc_dir = 'html'
+  rdoc.template = 'doc/jamis.rb'
+  rdoc.title    = "TExp - Temporal Expression Library for Ruby"
+  rdoc.options << '--line-numbers' << '--inline-source' <<
+    '--main' << 'README' <<
+    '--title' <<  'TExp - Temporal Expressions' 
+  rdoc.rdoc_files.include('README', 'MIT-LICENSE', 'TODO', 'CHANGES')
+  rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
+}
+
+# ====================================================================
+# Create a task that will package the Rake software into distributable
+# tar, zip and gem files.
+
+PKG_FILES = FileList[
+  '[A-Z]*',
+  'lib/**/*.rb', 
+  'test/**/*.rb',
+  'doc/**/*'
+]
+PACKAGE_VERSION = '0.0.1'
+
+if ! defined?(Gem)
+  puts "Package Target requires RubyGEMs"
+else
+  spec = Gem::Specification.new do |s|
+    s.name = 'texp'
+    s.version = PACKAGE_VERSION
+    s.summary = "Temporal Expressions for Ruby."
+    s.description = <<-EOF
+      TExp is a temporal expression library for Ruby with a modular, 
+      extensible expression serialization language.
+    EOF
+    s.files = PKG_FILES.to_a
+    s.require_path = 'lib'                         # Use these for libraries.
+    s.has_rdoc = true
+    s.extra_rdoc_files = rd.rdoc_files.reject { |fn| fn =~ /\.rb$/ }.to_a
+    s.rdoc_options = rd.options
+    s.author = "Jim Weirich"
+    s.email = "jim.weirich@gmail.com"
+    s.homepage = "http://texp.rubyforge.org"
+    s.rubyforge_project = "texp"
+  end
+
+  package_task = Rake::GemPackageTask.new(spec) do |pkg|
+    pkg.need_zip = true
+    pkg.need_tar = true
+  end
+end
+

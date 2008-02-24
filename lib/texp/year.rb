@@ -10,6 +10,10 @@ module TExp
       @years.include?(date.year)
     end
 
+    def inspect
+      "the year is " + humanize_list(@years)
+    end
+
     def encode(codes)
       encode_list(codes, @years)
       codes << 'y'

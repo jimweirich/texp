@@ -18,6 +18,10 @@ module TExp
       @terms.all? { |te| te.include?(date) }
     end
 
+    def inspect
+      humanize_list(@terms, "and") { |item| item.inspect }
+    end
+
     def encode(codes)
       encode_list(codes, @terms)
       codes << 'a'
@@ -35,6 +39,10 @@ module TExp
       @terms.any? { |te| te.include?(date) }
     end
 
+    def inspect
+      humanize_list(@terms) { |item| item.inspect }
+    end
+
     def encode(codes)
       encode_list(codes, @terms)
       codes << 'o'
@@ -50,6 +58,10 @@ module TExp
 
     def include?(date)
       ! @term.include?(date)
+    end
+
+    def inspect
+      "it is not the case that " + @term.inspect
     end
 
     def encode(codes)

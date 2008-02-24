@@ -16,7 +16,7 @@ module TExp
       # Dates
       '\d\d\d\d-\d\d-\d\d',
       # Numbers
-      '\d+',
+      '[+-]?\d+',
       # Extension Tokens
       '<(?:[a-zA-Z_][a-zA-Z0-9_]*::)?[a-zA-Z_][a-zA-Z0-9_]*>',
       # Everything else is a single character
@@ -51,7 +51,7 @@ module TExp
         case tok
         when /^\d\d\d\d-\d\d-\d\d/
           @stack.push Date.parse(tok)
-        when /^\d+$/
+        when /^[-+]?\d+$/
           @stack.push tok.to_i
         else
           fail ParseError, "Unrecoginized TExp Token '#{tok}'"

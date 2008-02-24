@@ -10,6 +10,11 @@ module TExp
       @days.include?(date.day)
     end
 
+    def inspect
+      "the day of the month is the " +
+        ordinal_list(@days)
+    end
+
     def encode(codes)
       encode_list(codes, @days)
       codes << 'd'
