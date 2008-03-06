@@ -7,10 +7,12 @@ module TExp
       @interval = interval
     end
 
+    # Is +date+ included in the temporal expression.
     def include?(date)
       ((date.mjd - base_mjd) % @interval) == 0
     end
 
+    # Human readable version of the temporal expression.
     def inspect
       if @interval == 1
         "every day starting on #{humanize_date(@base_date)}"
@@ -19,13 +21,17 @@ module TExp
       end
     end
 
+    # Encode the temporal expression into +codes+.
     def encode(codes)
       encode_date(codes, @base_date)
-      codes << ',' << @interval << 'i'
+      codes << ',' << @interval << encoding_token
     end
 
     def to_hash
-      { "type" => "i", "i1" => @base_date.to_s, "i2" => @interval.to_s }
+      build_hash do |b|
+        b.with(@base_date)
+        b.with(@interval)
+      end
     end
 
     private

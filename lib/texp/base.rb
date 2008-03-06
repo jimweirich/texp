@@ -1,5 +1,11 @@
+require 'texp/hash_builder'
+
 module TExp
+  # Abstract Base class for all Texp Temporal Expressions.
   class Base
+
+    # Convert the temporal expression into an encoded string (that can
+    # be parsed by TExp.parse).
     def to_s
       codes = []
       encode(codes)
@@ -8,6 +14,7 @@ module TExp
 
     private
 
+    # Coerce +arg+ into a list (i.e. Array) if it is not one already.
     def listize(arg)
       case arg
       when Array
@@ -17,10 +24,12 @@ module TExp
       end
     end
 
+    # Encode the date into the codes receiver.
     def encode_date(codes, date)
       codes << date.strftime("%Y-%m-%d")
     end
 
+    # Encode the list into the codes receiver.  All
     def encode_list(codes, list)
       if list.empty?
         codes << "[]"
@@ -38,10 +47,16 @@ module TExp
       end
     end
 
+    # For the list of integers as a list of ordinal numbers.  By
+    # default, use 'or' as a connectingin word. (e.g. [1,2,3] => "1st,
+    # 2nd, or 3rd")
     def ordinal_list(list, connector='or')
       humanize_list(list, connector) { |item| ordinal(item) }
     end
 
+    # Format the list in a human readable format.  By default, use
+    # "or" as a connecting word. (e.g. ['a', 'b', 'c'] => "a, b, or
+    # c")
     def humanize_list(list, connector='or', &block)
       block ||= lambda { |item| item.to_s }
       list = list.sort if list.all? { |item| item.kind_of?(Integer) && item >= 0 }
@@ -56,10 +71,12 @@ module TExp
       end
     end
 
+    # Format +date+ in a standard, human-readable format.
     def humanize_date(date)
       date.strftime("%B %d, %Y")
     end
 
+    # Hash of cardinal integers to ordinal suffixes.
     SUFFIX = {
       1 => "st",
       2 => "nd",
@@ -76,6 +93,8 @@ module TExp
       13 => "th",
     }
 
+    # Return the ordinal abbreviation for the integer +n+.  (e.g. 1 =>
+    # "1st", 3 => "3rd")
     def ordinal(n)
       if n == -1
         "last"
@@ -88,15 +107,37 @@ module TExp
       end        
     end
 
+    # The ordinal suffex appropriate for the given number.  (e.g. 1 =>
+    # "st", 2 => "nd")
     def suffix(n)
       SUFFIX[n % 100] || SUFFIX[n % 10]
     end
 
+    # Convenience method for accessing the class encoding token.
+    def encoding_token
+      self.class.encoding_token
+    end
+
+    # Build a params hash for this temporal expression.
+    def build_hash
+      builder = HashBuilder.new(encoding_token)
+      yield builder if block_given?
+      builder.hash
+    end
+
     class << self
+      # The token to be used for encoding this temporal expression.
+      attr_reader :encoding_token
+      
+      # Register a parse callack for the encoding token for this
+      # class.  
       def register_parse_callback(token, callback=self)
+        @encoding_token = token if callback == self
         TExp.register_parse_callback(token, callback)
       end
   
+      # The default parsing callback for single argument time
+      # expressions.  Override if you need anything more complicated.
       def parse_callback(stack)
         stack.push new(stack.pop)
       end

@@ -8,22 +8,27 @@ module TExp
       @weeks = listize(weeks)
     end
 
+    # Is +date+ included in the temporal expression.
     def include?(date)
       @weeks.include?(week_from_front(date)) ||
         @weeks.include?(week_from_back(date))
     end
 
+    # Encode the temporal expression into +codes+.
     def encode(codes)
       encode_list(codes, @weeks)
-      codes << 'k'
+      codes << encoding_token
     end
 
+    # Human readable version of the temporal expression.
     def inspect
       "it is the " + ordinal_list(@weeks) + " week of the month"
     end
 
     def to_hash
-      { 'type' => 'k', 'k1' => @weeks.map { |w| w.to_s } }
+      build_hash do |b|
+        b.with @weeks
+      end
     end
 
     private

@@ -6,22 +6,27 @@ module TExp
       @days = listize(days)
     end
 
+    # Is +date+ included in the temporal expression.
     def include?(date)
       @days.include?(date.wday)
     end
 
+    # Human readable version of the temporal expression.
     def inspect
       "the day of the week is " +
         humanize_list(@days) { |d| Date::DAYNAMES[d] }
     end
 
     def to_hash
-      { "type" => 'w', 'w1' => @days.map { |item| item.to_s } }
+      build_hash do |b|
+        b.with(@days)
+      end
     end
 
+    # Encode the temporal expression into +codes+.
     def encode(codes)
       encode_list(codes, @days)
-      codes << 'w'
+      codes << encoding_token
     end
   end
 end

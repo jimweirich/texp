@@ -2,20 +2,23 @@ module TExp
   class EveryDay < Base
     register_parse_callback('e')
 
+    # Is +date+ included in the temporal expression.
     def include?(date)
       true
     end
 
+    # Human readable version of the temporal expression.
     def inspect
       "every day"
     end
 
+    # Encode the temporal expression into +codes+.
     def encode(codes)
-      codes << 'e'
+      codes << encoding_token
     end
 
     def to_hash
-      { 'type' => 'e' }
+      build_hash
     end
 
     class << self

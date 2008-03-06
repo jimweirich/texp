@@ -40,7 +40,7 @@ rd = Rake::RDocTask.new("rdoc") { |rdoc|
   rdoc.options << '--line-numbers' << '--inline-source' <<
     '--main' << 'README' <<
     '--title' <<  'TExp - Temporal Expressions' 
-  rdoc.rdoc_files.include('README', 'MIT-LICENSE', 'TODO', 'CHANGES')
+  rdoc.rdoc_files.include('README', 'MIT-LICENSE', 'ChangeLog')
   rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
 }
 
@@ -54,7 +54,7 @@ PKG_FILES = FileList[
   'test/**/*.rb',
   'doc/**/*'
 ]
-PACKAGE_VERSION = '0.0.1'
+PACKAGE_VERSION = '0.0.2'
 
 if ! defined?(Gem)
   puts "Package Target requires RubyGEMs"

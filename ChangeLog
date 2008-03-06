@@ -1,0 +1,13 @@
+2008-03-06  Jim Weirich  <jim@tardis.local>
+
+	*  Addedd addition RDocs.
+
+	* lib/texp/hash_builder.rb (TExp::HashBuilder): Moved the hash
+	builder to its own file.
+
+	* lib/texp/base.rb (TExp::Base::build_hash): Added a hash builder
+	to capture common functionality.
+
+	* lib/texp/window.rb (TExp::Window): Added windows and related
+	tests to TExp.
+

@@ -54,6 +54,9 @@ class InspectTest < Test::Unit::TestCase
 
     assert_inspect "[1d1m]on",
       "it is not the case that the day of the month is the 1st or the month is January"
+
+    assert_inspect "3w2,1s",
+      "the day of the week is Wednesday, or up to 2 days prior, or up to 1 day after"
   end
 
   def assert_inspect(texp, string)

@@ -6,21 +6,26 @@ module TExp
       @years = listize(years)
     end
 
+    # Is +date+ included in the temporal expression.
     def include?(date)
       @years.include?(date.year)
     end
 
+    # Human readable version of the temporal expression.
     def inspect
       "the year is " + humanize_list(@years)
     end
 
+    # Encode the temporal expression into +codes+.
     def encode(codes)
       encode_list(codes, @years)
-      codes << 'y'
+      codes << encoding_token
     end
     
     def to_hash
-      { 'type' => 'y', 'y1' => @years.map { |y| y.to_s } }
+      build_hash do |b|
+        b.with @years
+      end
     end
   end
 end
