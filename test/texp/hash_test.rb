@@ -5,6 +5,8 @@ require 'date'
 require 'texp'
 
 ######################################################################
+# TODO: This test is incomplete.
+#
 class ToHashTest < Test::Unit::TestCase
   def test_interval_to_hash
     assert_hash '2008-02-14,2i', 'type' => 'i', 'i1' => '2008-02-14', 'i2' => '2'

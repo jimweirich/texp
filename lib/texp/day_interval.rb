@@ -1,6 +1,6 @@
 module TExp
   class DayInterval < Base
-    register_parse_callback('i', self)
+    register_parse_callback('i')
 
     def initialize(base_date, interval)
       @base_date = base_date

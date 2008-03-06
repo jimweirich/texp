@@ -158,6 +158,16 @@ class ParseTest < Test::Unit::TestCase
     assert ! te.include?(@date + 365)
   end
 
+  def test_parse_window
+    te = TExp.parse("3w2,1s")
+    assert ! te.include?(Date.parse("Mar 2, 2008"))
+    assert   te.include?(Date.parse("Mar 3, 2008"))
+    assert   te.include?(Date.parse("Mar 4, 2008"))
+    assert   te.include?(Date.parse("Mar 5, 2008"))
+    assert   te.include?(Date.parse("Mar 6, 2008"))
+    assert ! te.include?(Date.parse("Mar 7, 2008"))
+  end
+
   def test_parse_not
     te = TExp.parse("14dn")
     assert ! te.include?(@date)
@@ -210,6 +220,7 @@ class ParseReverseTest < Test::Unit::TestCase
     assert_round_trip("1k")
     assert_round_trip("[1,2]k")
     assert_round_trip("[1,2,-1]k")
+    assert_round_trip("3w2,1s")
   end
 
   private
