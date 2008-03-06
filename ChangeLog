@@ -1,5 +1,7 @@
 2008-03-06  Jim Weirich  <jim@tardis.local>
 
+	* Rakefile (Tags): Bumped Version to 0.0.3.
+
 	*  Addedd addition RDocs.
 
 	* lib/texp/hash_builder.rb (TExp::HashBuilder): Moved the hash

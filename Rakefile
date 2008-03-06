@@ -54,7 +54,7 @@ PKG_FILES = FileList[
   'test/**/*.rb',
   'doc/**/*'
 ]
-PACKAGE_VERSION = '0.0.2'
+PACKAGE_VERSION = '0.0.3'
 
 if ! defined?(Gem)
   puts "Package Target requires RubyGEMs"
