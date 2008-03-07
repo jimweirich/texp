@@ -12,6 +12,10 @@ module TExp
       codes.join("")
     end
 
+    def set_anchor_date(date)
+      # do nothing
+    end
+
     private
 
     # Coerce +arg+ into a list (i.e. Array) if it is not one already.

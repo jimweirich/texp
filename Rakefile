@@ -5,6 +5,8 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
 
+CLEAN.include("*.tmp")
+
 task :default => "test:units"
 
 namespace "test" do
@@ -54,7 +56,7 @@ PKG_FILES = FileList[
   'test/**/*.rb',
   'doc/**/*'
 ]
-PACKAGE_VERSION = '0.0.3'
+PACKAGE_VERSION = '0.0.5'
 
 if ! defined?(Gem)
   puts "Package Target requires RubyGEMs"

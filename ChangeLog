@@ -1,6 +1,8 @@
 2008-03-06  Jim Weirich  <jim@tardis.local>
 
-	* Rakefile (Tags): Bumped Version to 0.0.3.
+	* Rakefile: Beefed up README. Bumped to verison 0.0.4.
+	
+	* Rakefile: Bumped Version to 0.0.3.
 
 	*  Addedd addition RDocs.
 

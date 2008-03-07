@@ -1,2 +1,78 @@
+= Temporal Expressions for Ruby
+
 TExp is a temporal expression library for Ruby with a modular,
 extensible expression serialization language.
+
+== Features
+
+* Basic Expressions for:
+  * Day of Week
+  * Day of Month
+  * Week of Month
+  * Specific Year
+  * Speicifc Month
+
+* Composite Expressions for:
+  * Logical AND (date must be included by all sub-expressions)
+  * Logical OR (date is included by any sub-expression)
+  * Logical NOT (include any date not included in the sub-expression)
+  * Windows (specify a windows of days around any date matching the sub-expression)
+
+* Human readable descriptions via inspect
+
+* Compact, parsable encoding via to_s
+
+* User expandable with custom temporal expression types, that
+  interoperates with the compact, parsable encoding.
+
+== Examples
+
+=== Match any Monday
+
+  te = TExp::DayOfWeek.new(Date::DAYNAMES.index("Monday"))
+  te.include?(Date.parse("Mar 3, 2008"))    # => true
+  te.include?(Date.parse("Mar 4, 2008"))    # => false
+  te.include?(Date.parse("Mar 10, 2008"))   # => true
+
+=== Match any date in March
+
+   te = TExp::Month.new(3)
+   te.include?(Date.parse("Mar 1, 2008"))   # => true
+   te.include?(Date.parse("Mar 31, 2008"))  # => true
+   te.include?(Date.parse("Mar 15, 1995"))   # => true
+
+   te.include?(Date.parse("Feb 28, 2008"))   # => false
+
+=== Match Valentine's day (any year)
+
+  te = TExp::And.new(
+         TExp::DayOfMonth.new(14),
+         TExp::Month.new(2))
+
+   te.include?(Date.parse("Feb 14, 2008"))  # => true
+   te.include?(Date.parse("Feb 14, 2007"))  # => true
+            
+
+=== Match Valentine's day in 2008
+
+  te = TExp::And.new(
+         TExp::DayOfMonth.new(14),
+         TExp::Month.new(2),
+         TExp::Year.new(2008))
+
+   te.include?(Date.parse("Feb 14, 2008"))  # => true
+   te.include?(Date.parse("Feb 14, 2007"))  # => false
+
+=== Match any Monday in March
+
+   te = TExp::And.new(
+          TExp::Month.new(3),
+          TExp::DayOfWeek.new(Date::DAYNAMES.index("Monday")))
+
+   te.include?(Date.parse("Mar 3, 2008"))    # => true
+   te.include?(Date.parse("Mar 10, 2008"))   # => true
+
+   te.include?(Date.parse("Mar 11, 2008"))   # => false
+   te.include?(Date.parse("Apr 7, 2008"))    # => false
+
+

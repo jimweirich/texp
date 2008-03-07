@@ -3,6 +3,17 @@ module TExp
   # Base class for temporal expressions with multiple sub-expressions
   # (i.e. terms).
   class TermsBase < Base
+
+    # Create an multi-term temporal expression.
+    def initialize(*terms)
+      @terms = terms
+    end
+
+    # Set the anchor date for this temporal expression.
+    def set_anchor_date(date)
+      @terms.each do |term| term.set_anchor_date(date) end
+    end
+
     class << self
       # Parsing callback for terms based temporal expressions.  The
       # top of the stack is assumed to be a list that is *-expanded to
@@ -17,11 +28,6 @@ module TExp
   # only if it is included in all of the sub-expressions.
   class And < TermsBase
     register_parse_callback('a')
-
-    # Create an AND temporal expression.
-    def initialize(*terms)
-      @terms = terms
-    end
 
     # Is +date+ included in the temporal expression.
     def include?(date)
@@ -44,11 +50,6 @@ module TExp
   # if it is included in any of the sub-expressions.
   class Or < TermsBase
     register_parse_callback('o')
-
-    # Create an OR temporal expression.
-    def initialize(*terms)
-      @terms = terms
-    end
 
     # Is +date+ included in the temporal expression.
     def include?(date)
@@ -80,6 +81,11 @@ module TExp
     # Is date included in the temporal expression.
     def include?(date)
       ! @term.include?(date)
+    end
+
+    # Set the anchor date for this temporal expression.
+    def set_anchor_date(date)
+      @term.set_anchor_date(date)
     end
 
     # Human readable version of the temporal expression.

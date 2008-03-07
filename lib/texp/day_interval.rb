@@ -2,6 +2,8 @@ module TExp
   class DayInterval < Base
     register_parse_callback('i')
 
+    attr_reader :base_date
+
     def initialize(base_date, interval)
       @base_date = base_date
       @interval = interval
@@ -10,6 +12,11 @@ module TExp
     # Is +date+ included in the temporal expression.
     def include?(date)
       ((date.mjd - base_mjd) % @interval) == 0
+    end
+
+    # Set the anchor date for the temporal expression.
+    def set_anchor_date(new_anchor_date)
+      @base_date = new_anchor_date
     end
 
     # Human readable version of the temporal expression.
