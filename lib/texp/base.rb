@@ -1,9 +1,12 @@
 require 'texp/hash_builder'
 
 module TExp
+
+  ####################################################################
   # Abstract Base class for all Texp Temporal Expressions.
   class Base
-
+    include Enumerable
+    
     # Convert the temporal expression into an encoded string (that can
     # be parsed by TExp.parse).
     def to_s
@@ -12,12 +15,19 @@ module TExp
       codes.join("")
     end
 
-    def set_anchor_date(date)
-      # do nothing
+    # Create a new temporal expression with a new anchor date.
+    def reanchor(date)
+      self
     end
 
+    # Iterate over all temporal expressions and subexpressions (in
+    # post order).
+    def each
+      yield self
+    end
+    
     private
-
+    
     # Coerce +arg+ into a list (i.e. Array) if it is not one already.
     def listize(arg)
       case arg
@@ -27,12 +37,12 @@ module TExp
         [arg]
       end
     end
-
+    
     # Encode the date into the codes receiver.
     def encode_date(codes, date)
       codes << date.strftime("%Y-%m-%d")
     end
-
+    
     # Encode the list into the codes receiver.  All
     def encode_list(codes, list)
       if list.empty?
@@ -50,7 +60,7 @@ module TExp
         codes << "]"
       end
     end
-
+    
     # For the list of integers as a list of ordinal numbers.  By
     # default, use 'or' as a connectingin word. (e.g. [1,2,3] => "1st,
     # 2nd, or 3rd")
@@ -145,6 +155,67 @@ module TExp
       def parse_callback(stack)
         stack.push new(stack.pop)
       end
+    end # class << self
+  end # class Base
+
+  ####################################################################
+  # Base class for temporal expressions with a single sub-expressions
+  # (i.e. term).
+  class SingleTermBase < Base
+    # Create a single term temporal expression.
+    def initialize(term)
+      @term = term
     end
-  end
-end
+
+    # Create a new temporal expression with a new anchor date.
+    def reanchor(date)
+      new_term = @term.reanchor(date)
+      (@term == new_term) ? self : self.class.new(new_term)
+    end
+
+    # Iterate over all temporal expressions and subexpressions (in
+    # post order).
+    def each
+      yield @term
+      yield self
+    end
+  end # class SingleTermBase
+
+  ####################################################################
+  # Base class for temporal expressions with multiple sub-expressions
+  # (i.e. terms).
+  class MultiTermBase < Base
+
+    # Create an multi-term temporal expression.
+    def initialize(*terms)
+      @terms = terms
+    end
+
+    # Create a new temporal expression with a new anchor date.
+    def reanchor(date)
+      new_terms = @terms.collect { |term| term.reanchor(date) }
+      if new_terms == @terms
+        self
+      else
+        self.class.new(*new_terms)
+      end
+    end
+
+    # Iterate over all temporal expressions and subexpressions (in
+    # post order).
+    def each
+      @terms.each do |term| yield term end
+      yield self
+    end
+
+    class << self
+      # Parsing callback for terms based temporal expressions.  The
+      # top of the stack is assumed to be a list that is *-expanded to
+      # the temporal expression's constructor.
+      def parse_callback(stack)
+        stack.push self.new(*stack.pop)
+      end
+    end
+  end # class << self
+
+end # class MultiTermBase

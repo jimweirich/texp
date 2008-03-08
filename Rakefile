@@ -56,7 +56,10 @@ PKG_FILES = FileList[
   'test/**/*.rb',
   'doc/**/*'
 ]
-PACKAGE_VERSION = '0.0.5'
+
+$:.unshift 'lib'
+require 'texp/version'
+PACKAGE_VERSION = TExp::VERSION
 
 if ! defined?(Gem)
   puts "Package Target requires RubyGEMs"

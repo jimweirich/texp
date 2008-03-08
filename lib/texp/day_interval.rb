@@ -14,9 +14,9 @@ module TExp
       ((date.mjd - base_mjd) % @interval) == 0
     end
 
-    # Set the anchor date for the temporal expression.
-    def set_anchor_date(new_anchor_date)
-      @base_date = new_anchor_date
+    # Create a new temporal expression with a new anchor date.
+    def reanchor(new_anchor_date)
+      self.class.new(new_anchor_date, @interval)
     end
 
     # Human readable version of the temporal expression.

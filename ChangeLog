@@ -1,3 +1,17 @@
+2008-03-07  Jim Weirich  <jim@tardis.local>
+
+	* lib/texp/base.rb (TExp::SingleTermBase): Created a
+	SingleTermBase class and moved all base classes into base.rb.
+	(TExp::SingleTermBase::each): Added Enumerable to TExp.
+	(TExp::Base::reanchor): Renamed set_anchor_date to reanchor.
+	Temporal Expressions are now immutable value objects.
+
+	* Rakefile (Tags): Added a TExp::VERSION constant (and bumped to
+	version 0.0.6).
+
+	* lib/texp/day_interval.rb (TExp::DayInterval::set_anchor_date):
+	Added set_anchor_date to temporal expressions.
+
 2008-03-06  Jim Weirich  <jim@tardis.local>
 
 	* Rakefile: Beefed up README. Bumped to verison 0.0.4.

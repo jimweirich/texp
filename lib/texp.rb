@@ -1,3 +1,4 @@
+require 'texp/version'
 require 'texp/core'
 require 'texp/base'
 require 'texp/parse'
