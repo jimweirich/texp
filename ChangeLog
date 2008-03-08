@@ -1,5 +1,8 @@
 2008-03-08  Jim Weirich  <jim@tardis.local>
 
+	* lib/texp/dsl.rb (TExp::DSL): Added DSL like methods to TExp and
+	texp { ... }.
+
 	* lib/texp/version.rb (TExp): Bumped to version 0.0.7
 
 	* Rakefile (RCov): Added an rcov task.  Removed a number of unused
@@ -33,7 +36,7 @@
 	
 	* Rakefile: Bumped Version to 0.0.3.
 
-	*  Addedd addition RDocs.
+	*  Added addition RDocs.
 
 	* lib/texp/hash_builder.rb (TExp::HashBuilder): Moved the hash
 	builder to its own file.

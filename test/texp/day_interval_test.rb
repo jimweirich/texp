@@ -1,8 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'test/unit'
-require 'date'
-require 'texp'
+require 'test/texp_tests'
 
 class DayIntervalTest < Test::Unit::TestCase
 
@@ -26,5 +24,11 @@ class DayIntervalTest < Test::Unit::TestCase
     assert_equal "0,3i", TExp.parse("0,3i").to_s
   end
 
+  def test_day_interval_excludes_dates_before_start
+    date = d("Mar 1, 2008")
+    te = TExp::DayInterval.new(date, 3)
+
+    assert_not_includes te, date-3, date-2, date-1
+  end
 end
 

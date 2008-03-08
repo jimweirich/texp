@@ -34,10 +34,52 @@ module TExp
 
     # Iterate over all temporal expressions and subexpressions (in
     # post order).
-    def each
+    def each()                  # :yield: temporal_expression
       yield self
     end
     
+    # :call-seq:
+    #   window(days)
+    #   window(predays, postdays)
+    #   window(n, units)
+    #   window(pre, pre_units, post, post_units)
+    #
+    # Create a new temporal expression that matches a window around
+    # any date matched by the current expression.
+    #
+    # If a single numeric value is given, then a symetrical window of
+    # the given number of days is created around each date matched by
+    # the current expression.  If a symbol representing units is given
+    # in addition to the numeric, then the appropriate scale factor is
+    # applied to the numeric value.
+    #
+    # If two numberic values are given (with or without unit symbols),
+    # then the window will be asymmetric.  The firsts numeric value
+    # will be the pre-window, and the second numeric value will be the
+    # post window.
+    #
+    # The following unit symbols are recognized:
+    #
+    # * :day, :days   (scale by 1)
+    # * :week, :weeks (scale by 7)
+    # * :month, :months (scale by 30)
+    # * :year, :years (scale by 365)
+    #
+    # <b>Examples:</b>
+    #
+    #   texp.window(3)         # window of 3 days on either side
+    #   texp.window(3, :days)  # window of 3 days on either side
+    #   texp.window(1, :week)  # window of 1 week on either side
+    #   texp.window(3, :days, 2, :weeks)
+    #                          # window of 3 days before any match,
+    #                          # and 2 weeks after any match.
+    #
+    def window(*args)
+      prewindow, postwindow = TExp.normalize_units(args)
+      postwindow ||= prewindow
+      TExp::Window.new(self, prewindow, postwindow)
+    end
+
     private
     
     # Coerce +arg+ into a list (i.e. Array) if it is not one already.
@@ -117,7 +159,7 @@ module TExp
       11 => "th",
       12 => "th",
       13 => "th",
-    }
+    }                           # :nodoc:
 
     # Return the ordinal abbreviation for the integer +n+.  (e.g. 1 =>
     # "1st", 3 => "3rd")
@@ -187,7 +229,7 @@ module TExp
 
     # Iterate over all temporal expressions and subexpressions (in
     # post order).
-    def each
+    def each()                  # :yield: temporal_expression
       yield @term
       yield self
     end
@@ -215,7 +257,7 @@ module TExp
 
     # Iterate over all temporal expressions and subexpressions (in
     # post order).
-    def each
+    def each()                  # :yield: temporal_expression
       @terms.each do |term| yield term end
       yield self
     end

@@ -1,15 +1,10 @@
 module TExp
 
-  # Thrown if an error is encountered during the parsing of a temporal
-  # expression.
-  class ParseError < StandardError
-  end
-
   # ------------------------------------------------------------------
   # Class methods.
   #
   class << self
-    PARSE_CALLBACKS = {}
+    PARSE_CALLBACKS = {}        # :nodoc:
 
     # Lexical Definitions
     TOKEN_PATTERNS = [
@@ -22,17 +17,17 @@ module TExp
       # Everything else is a single character
       # (except commas and spaces which are ignored)
       '[^, ]',
-    ].join('|')
-    TOKEN_RE = Regexp.new(TOKEN_PATTERNS)
+    ].join('|')                           # :nodoc:
+    TOKEN_RE = Regexp.new(TOKEN_PATTERNS) # :nodoc:
 
     # Register a parsing callback.  Individual Temporal Expression
-    # classes will register their won callbacks as needed.  A handful
+    # classes will register their own callbacks as needed.  A handful
     # of non-class based parser callbacks are registered below.
     def register_parse_callback(token, callback)
       PARSE_CALLBACKS[token] = callback
     end
   
-    # Parse a temporal expression string
+    # Return the temporal expression encoded by string.
     def parse(string)
       @stack = []
       string.scan(TOKEN_RE) do |tok|
@@ -75,7 +70,8 @@ module TExp
   
   # List parsing handlers
   
-  MARK = :mark
+  # Mark the end of the list.
+  MARK = :mark                  # :nodoc:
   
   # Push a mark on the stack to start a list.
   register_parse_callback('[',

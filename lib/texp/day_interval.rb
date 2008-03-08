@@ -11,10 +11,10 @@ module TExp
 
     # Is +date+ included in the temporal expression.
     def includes?(date)
-      if @base_date
-        ((date.mjd - base_mjd) % @interval) == 0
-      else
+      if @base_date.nil? || date < @base_date
         false
+      else
+        ((date.mjd - base_mjd) % @interval) == 0
       end
     end
 
