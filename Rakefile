@@ -6,6 +6,7 @@ require 'rake/rdoctask'
 require 'rake/gempackagetask'
 
 CLEAN.include("*.tmp")
+CLOBBER.include('coverage', 'rcov_aggregate')
 
 task :default => "test:units"
 
@@ -33,6 +34,22 @@ end
 desc "Generate the TAGS file"
 task :tags => ["tags:emacs"]
 
+
+begin
+  require 'rcov/rcovtask'
+
+  Rcov::RcovTask.new do |t|
+    t.libs << "test"
+    t.rcov_opts = [
+      '-xRakefile', '-xrakefile', '-xpublish.rf', '--text-report',
+    ]
+    t.test_files = FileList['test/**/*_test.rb']
+    t.output_dir = 'coverage'
+    t.verbose = true
+  end
+rescue LoadError
+  puts "RCov is not available"
+end
 
 # RDoc Task
 rd = Rake::RDocTask.new("rdoc") { |rdoc|

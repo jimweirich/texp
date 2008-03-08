@@ -7,8 +7,8 @@ module TExp
     register_parse_callback('a')
 
     # Is +date+ included in the temporal expression.
-    def include?(date)
-      @terms.all? { |te| te.include?(date) }
+    def includes?(date)
+      @terms.all? { |te| te.includes?(date) }
     end
 
     # Human readable version of the temporal expression.
@@ -30,8 +30,8 @@ module TExp
     register_parse_callback('o')
 
     # Is +date+ included in the temporal expression.
-    def include?(date)
-      @terms.any? { |te| te.include?(date) }
+    def includes?(date)
+      @terms.any? { |te| te.includes?(date) }
     end
 
     # Human readable version of the temporal expression.
@@ -53,8 +53,8 @@ module TExp
     register_parse_callback('n')
 
     # Is date included in the temporal expression.
-    def include?(date)
-      ! @term.include?(date)
+    def includes?(date)
+      ! @term.includes?(date)
     end
 
     # Human readable version of the temporal expression.

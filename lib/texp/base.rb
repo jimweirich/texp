@@ -1,5 +1,3 @@
-require 'texp/hash_builder'
-
 module TExp
 
   ####################################################################
@@ -18,6 +16,20 @@ module TExp
     # Create a new temporal expression with a new anchor date.
     def reanchor(date)
       self
+    end
+
+    # Return the first day of the window for the temporal expression.
+    # If the temporal expression is not a windowed expression, then
+    # the first day of the window is the given date.
+    def first_day_of_window(date)
+      includes?(date) ? date : nil
+    end
+
+    # Return the last day of the window for the temporal expression.
+    # If the temporal expression is not a windowed expression, then
+    # the last day of the window is the given date.
+    def last_day_of_window(date)
+      includes?(date) ? date : nil
     end
 
     # Iterate over all temporal expressions and subexpressions (in

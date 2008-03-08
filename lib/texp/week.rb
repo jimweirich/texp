@@ -9,7 +9,7 @@ module TExp
     end
 
     # Is +date+ included in the temporal expression.
-    def include?(date)
+    def includes?(date)
       @weeks.include?(week_from_front(date)) ||
         @weeks.include?(week_from_back(date))
     end
@@ -23,12 +23,6 @@ module TExp
     # Human readable version of the temporal expression.
     def inspect
       "it is the " + ordinal_list(@weeks) + " week of the month"
-    end
-
-    def to_hash
-      build_hash do |b|
-        b.with @weeks
-      end
     end
 
     private

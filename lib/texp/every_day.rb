@@ -3,7 +3,7 @@ module TExp
     register_parse_callback('e')
 
     # Is +date+ included in the temporal expression.
-    def include?(date)
+    def includes?(date)
       true
     end
 
@@ -15,10 +15,6 @@ module TExp
     # Encode the temporal expression into +codes+.
     def encode(codes)
       codes << encoding_token
-    end
-
-    def to_hash
-      build_hash
     end
 
     class << self

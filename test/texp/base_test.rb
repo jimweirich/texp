@@ -48,9 +48,9 @@ class BaseAnchorTest < Test::Unit::TestCase
   def assert_cycle(te, start_date, n)
     (0...2*n).each do |i|
       if (i % n) == 0
-        assert te.include?(start_date + i)
+        assert te.includes?(start_date + i)
       else
-        assert ! te.include?(start_date + i)
+        assert ! te.includes?(start_date + i)
       end
     end
   end
@@ -73,10 +73,10 @@ class BaseAnchorTest < Test::Unit::TestCase
   end
 
   def assert_complex_cycle(te, start_date)
-    assert te.include?(start_date)
-    assert te.include?(start_date+1)
-    assert te.include?(start_date+2)
-    assert ! te.include?(start_date+3)
-    assert te.include?(start_date+4)
+    assert te.includes?(start_date)
+    assert te.includes?(start_date+1)
+    assert te.includes?(start_date+2)
+    assert ! te.includes?(start_date+3)
+    assert te.includes?(start_date+4)
   end
 end

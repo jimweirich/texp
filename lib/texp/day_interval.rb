@@ -5,13 +5,17 @@ module TExp
     attr_reader :base_date
 
     def initialize(base_date, interval)
-      @base_date = base_date
+      @base_date = base_date.kind_of?(Date) ? base_date : nil
       @interval = interval
     end
 
     # Is +date+ included in the temporal expression.
-    def include?(date)
-      ((date.mjd - base_mjd) % @interval) == 0
+    def includes?(date)
+      if @base_date
+        ((date.mjd - base_mjd) % @interval) == 0
+      else
+        false
+      end
     end
 
     # Create a new temporal expression with a new anchor date.
@@ -30,25 +34,18 @@ module TExp
 
     # Encode the temporal expression into +codes+.
     def encode(codes)
-      encode_date(codes, @base_date)
-      codes << ',' << @interval << encoding_token
-    end
-
-    def to_hash
-      build_hash do |b|
-        b.with(@base_date)
-        b.with(@interval)
+      if @base_date
+        encode_date(codes, @base_date)
+      else
+        codes << 0
       end
+      codes << ',' << @interval << encoding_token
     end
 
     private
 
     def base_mjd
       @base_date.mjd
-    end
-
-    def formatted_date
-      @base_date.strftime("%Y-%m-%d")
     end
 
     class << self

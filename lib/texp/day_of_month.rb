@@ -7,7 +7,7 @@ module TExp
     end
 
     # Is +date+ included in the temporal expression.
-    def include?(date)
+    def includes?(date)
       @days.include?(date.day)
     end
 
@@ -21,12 +21,6 @@ module TExp
     def encode(codes)
       encode_list(codes, @days)
       codes << encoding_token
-    end
-
-    def to_hash
-      build_hash do |b|
-        b.with(@days.map { |d| d.to_s })
-      end
     end
   end
 end

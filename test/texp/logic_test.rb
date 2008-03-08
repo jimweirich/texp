@@ -15,36 +15,36 @@ class LogicTest < Test::Unit::TestCase
   FF = DATE+1
 
   def test_constants
-    assert LEFT.include?(TT)
-    assert LEFT.include?(TF)
-    assert ! LEFT.include?(FT)
-    assert ! LEFT.include?(FF)
-    assert RIGHT.include?(TT)
-    assert RIGHT.include?(FT)
-    assert ! RIGHT.include?(TF)
-    assert ! RIGHT.include?(FF)
+    assert LEFT.includes?(TT)
+    assert LEFT.includes?(TF)
+    assert ! LEFT.includes?(FT)
+    assert ! LEFT.includes?(FF)
+    assert RIGHT.includes?(TT)
+    assert RIGHT.includes?(FT)
+    assert ! RIGHT.includes?(TF)
+    assert ! RIGHT.includes?(FF)
   end
 
   def test_and
     te = TExp::And.new(LEFT, RIGHT, LEFT, RIGHT)
-    assert te.include?(TT)
-    assert ! te.include?(FT)
-    assert ! te.include?(TF)
-    assert ! te.include?(FF)
+    assert te.includes?(TT)
+    assert ! te.includes?(FT)
+    assert ! te.includes?(TF)
+    assert ! te.includes?(FF)
   end
 
   def test_or
     te = TExp::Or.new(LEFT, RIGHT, LEFT, RIGHT)
-    assert te.include?(TT)
-    assert te.include?(FT)
-    assert te.include?(TF)
-    assert ! te.include?(FF)
+    assert te.includes?(TT)
+    assert te.includes?(FT)
+    assert te.includes?(TF)
+    assert ! te.includes?(FF)
   end
 
   def test_not
     te = TExp::Not.new(LEFT)
-    assert ! te.include?(TT)
-    assert te.include?(FF)
+    assert ! te.includes?(TT)
+    assert te.includes?(FF)
   end
 
 end

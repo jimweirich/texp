@@ -8,33 +8,33 @@ class WeekTest < Test::Unit::TestCase
 
   def test_week_include_with_one_week
     te = TExp::Week.new([1])
-    assert te.include?(Date.parse("Feb 1, 2008"))
-    assert te.include?(Date.parse("Feb 2, 2008"))
-    assert te.include?(Date.parse("Feb 3, 2008"))
-    assert te.include?(Date.parse("Feb 5, 2008"))
-    assert te.include?(Date.parse("Feb 6, 2008"))
-    assert te.include?(Date.parse("Feb 7, 2008"))
-    assert ! te.include?(Date.parse("Feb 8, 2008"))
+    assert te.includes?(Date.parse("Feb 1, 2008"))
+    assert te.includes?(Date.parse("Feb 2, 2008"))
+    assert te.includes?(Date.parse("Feb 3, 2008"))
+    assert te.includes?(Date.parse("Feb 5, 2008"))
+    assert te.includes?(Date.parse("Feb 6, 2008"))
+    assert te.includes?(Date.parse("Feb 7, 2008"))
+    assert ! te.includes?(Date.parse("Feb 8, 2008"))
   end
 
   def test_week_include_with_several_weeks
     te = TExp::Week.new([2,4])
-    assert ! te.include?(Date.parse("Feb 1, 2008"))
-    assert ! te.include?(Date.parse("Feb 7, 2008"))
-    assert   te.include?(Date.parse("Feb 8, 2008"))
-    assert   te.include?(Date.parse("Feb 14, 2008"))
-    assert ! te.include?(Date.parse("Feb 15, 2008"))
-    assert ! te.include?(Date.parse("Feb 21, 2008"))
-    assert   te.include?(Date.parse("Feb 22, 2008"))
-    assert   te.include?(Date.parse("Feb 28, 2008"))
+    assert ! te.includes?(Date.parse("Feb 1, 2008"))
+    assert ! te.includes?(Date.parse("Feb 7, 2008"))
+    assert   te.includes?(Date.parse("Feb 8, 2008"))
+    assert   te.includes?(Date.parse("Feb 14, 2008"))
+    assert ! te.includes?(Date.parse("Feb 15, 2008"))
+    assert ! te.includes?(Date.parse("Feb 21, 2008"))
+    assert   te.includes?(Date.parse("Feb 22, 2008"))
+    assert   te.includes?(Date.parse("Feb 28, 2008"))
   end
 
   def test_week_with_last_week_of_month
     te = TExp::Week.new([-1])
-    assert !  te.include?(Date.parse("Feb 1, 2008"))
-    assert !  te.include?(Date.parse("Feb 22, 2008"))
-    assert   te.include?(Date.parse("Feb 23, 2008"))
-    assert   te.include?(Date.parse("Feb 29, 2008"))
+    assert !  te.includes?(Date.parse("Feb 1, 2008"))
+    assert !  te.includes?(Date.parse("Feb 22, 2008"))
+    assert   te.includes?(Date.parse("Feb 23, 2008"))
+    assert   te.includes?(Date.parse("Feb 29, 2008"))
   end
 
   # Test some private methods

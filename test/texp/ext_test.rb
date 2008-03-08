@@ -29,7 +29,7 @@ module TExp
 
         # Define how your temporal expression class handles dates.
         # Our example is easy because we always return false.
-        def include?(date)
+        def includes?(date)
           false
         end
 
@@ -67,12 +67,12 @@ end # module TExp
 class ExtensionsTest < Test::Unit::TestCase
   def test_never
     te = TExp::Extensions::MyExt::Never.new
-    assert ! te.include?(Date.today)
+    assert ! te.includes?(Date.today)
   end
 
   def test_parse_never
     te = TExp.parse("<MyExt::never>")
-    assert ! te.include?(Date.today)
+    assert ! te.includes?(Date.today)
   end
 
   def test_parsing_round_trip

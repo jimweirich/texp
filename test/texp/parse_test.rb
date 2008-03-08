@@ -97,14 +97,14 @@ class ParseTest < Test::Unit::TestCase
 
   def test_parse_interval
     te = TExp.parse("2008-02-14,2i")
-    assert te.include?(@date)
-    assert ! te.include?(@date+1)
-    assert te.include?(@date+2)
+    assert te.includes?(@date)
+    assert ! te.includes?(@date+1)
+    assert te.includes?(@date+2)
   end
 
   def test_parse_day_of_month
     te = TExp.parse("14d")
-    te.include?(@date)
+    te.includes?(@date)
   end
 
   def test_parse_list
@@ -114,85 +114,85 @@ class ParseTest < Test::Unit::TestCase
 
   def test_parse_day_of_month_with_multiple_args
     te = TExp.parse("[13,14]d")
-    assert te.include?(@date)
-    assert te.include?(@date-1)
-    assert ! te.include?(@date+2)
+    assert te.includes?(@date)
+    assert te.includes?(@date-1)
+    assert ! te.includes?(@date+2)
   end
 
   def test_parse_day_of_week_with_single_arg
     te = TExp.parse("4w")
-    assert te.include?(@date)
-    assert ! te.include?(@date+2)
+    assert te.includes?(@date)
+    assert ! te.includes?(@date+2)
   end
 
   def test_parse_day_of_week_with_multiple_args
     te = TExp.parse("[3,4]w")
-    assert te.include?(@date)
-    assert te.include?(@date-1)
-    assert ! te.include?(@date+2)
+    assert te.includes?(@date)
+    assert te.includes?(@date-1)
+    assert ! te.includes?(@date+2)
   end
 
   def test_parse_month_with_single_arg
     te = TExp.parse("2m")
-    assert te.include?(@date)
-    assert ! te.include?(@date + 30)
+    assert te.includes?(@date)
+    assert ! te.includes?(@date + 30)
   end
 
   def test_parse_month_with_multiple_args
     te = TExp.parse("[2,3]m")
-    assert te.include?(@date)
-    assert te.include?(@date + 30)
-    assert ! te.include?(@date + 60)
+    assert te.includes?(@date)
+    assert te.includes?(@date + 30)
+    assert ! te.includes?(@date + 60)
   end
 
   def test_parse_year_with_single_arg
     te = TExp.parse("2008y")
-    assert te.include?(@date)
-    assert ! te.include?(@date + 365)
+    assert te.includes?(@date)
+    assert ! te.includes?(@date + 365)
   end
 
   def test_parse_year_with_multiple_args
     te = TExp.parse("[2007,2008]y")
-    assert te.include?(@date)
-    assert te.include?(@date - 365)
-    assert ! te.include?(@date + 365)
+    assert te.includes?(@date)
+    assert te.includes?(@date - 365)
+    assert ! te.includes?(@date + 365)
   end
 
   def test_parse_window
     te = TExp.parse("3w2,1s")
-    assert ! te.include?(Date.parse("Mar 2, 2008"))
-    assert   te.include?(Date.parse("Mar 3, 2008"))
-    assert   te.include?(Date.parse("Mar 4, 2008"))
-    assert   te.include?(Date.parse("Mar 5, 2008"))
-    assert   te.include?(Date.parse("Mar 6, 2008"))
-    assert ! te.include?(Date.parse("Mar 7, 2008"))
+    assert ! te.includes?(Date.parse("Mar 2, 2008"))
+    assert   te.includes?(Date.parse("Mar 3, 2008"))
+    assert   te.includes?(Date.parse("Mar 4, 2008"))
+    assert   te.includes?(Date.parse("Mar 5, 2008"))
+    assert   te.includes?(Date.parse("Mar 6, 2008"))
+    assert ! te.includes?(Date.parse("Mar 7, 2008"))
   end
 
   def test_parse_not
     te = TExp.parse("14dn")
-    assert ! te.include?(@date)
-    assert te.include?(@date + 1)
+    assert ! te.includes?(@date)
+    assert te.includes?(@date + 1)
   end
 
   def test_parse_and
-    TExp.parse("14d").include?(@date)
-    TExp.parse("2m").include?(@date)
+    TExp.parse("14d").includes?(@date)
+    TExp.parse("2m").includes?(@date)
     te = TExp.parse("[14d 2m] a")
-    assert te.include?(@date)
-    assert ! te.include?(@date + 1)
-    assert ! te.include?(@date + 365)
+    assert te.includes?(@date)
+    assert ! te.includes?(@date + 1)
+    assert ! te.includes?(@date + 365)
   end
 
   def test_parse_or
     te = TExp.parse("[14d 15d] o")
-    assert te.include?(@date)
-    assert te.include?(@date + 1)
-    assert ! te.include?(@date + 2)
+    assert te.includes?(@date)
+    assert te.includes?(@date + 1)
+    assert ! te.includes?(@date + 2)
   end
 
   def test_parse_every_day
     te = TExp.parse('e')
-    assert te.include?(Date.today)
+    assert te.includes?(Date.today)
   end
 end
 

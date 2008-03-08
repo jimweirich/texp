@@ -3,14 +3,30 @@
 TExp is a temporal expression library for Ruby with a modular,
 extensible expression serialization language.
 
-== Features
+Temporal expressions are a way of concisely expressing recuring
+events.  For example, Christmas falls on the 25th of December every
+year.  A temporal expression that represented the recurring event
+called "Christmas" would return true for any date that falls on the
+25th of December.
+
+   dec25 = Date.parse("Dec 25, 2008")
+   christmas_texp.includes?(dec25)      # => true
+   christmas_texp.includes?(dec25 + 1)  # => false
+
+Temporal expressions can be combined using operators.  For example, if
+I have a temporal expression for Christmas and one for Thanksgiving, I
+can combine them into a single holiday expression thusly:
+
+   holidays_texp = christmas_texp + thanksgiving_texp
+
+== +TExp+ Features
 
 * Basic Expressions for:
-  * Day of Week
-  * Day of Month
-  * Week of Month
-  * Specific Year
-  * Speicifc Month
+  * Day of Week (see DayOfWeek)
+  * Day of Month (see DayOfMonth)
+  * Week of Month (See Week)
+  * Speicifc Month (See Month)
+  * Specific Year (See Year)
 
 * Composite Expressions for:
   * Logical AND (date must be included by all sub-expressions)

@@ -7,7 +7,7 @@ module TExp
     end
 
     # Is +date+ included in the temporal expression.
-    def include?(date)
+    def includes?(date)
       @days.include?(date.wday)
     end
 
@@ -15,12 +15,6 @@ module TExp
     def inspect
       "the day of the week is " +
         humanize_list(@days) { |d| Date::DAYNAMES[d] }
-    end
-
-    def to_hash
-      build_hash do |b|
-        b.with(@days)
-      end
     end
 
     # Encode the temporal expression into +codes+.

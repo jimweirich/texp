@@ -12,9 +12,9 @@ class MonthTest < Test::Unit::TestCase
 
   def test_initial_conditions
     te = TExp::Month.new(2)
-    assert te.include?(@date)
-    assert te.include?(@date + 1)
-    assert ! te.include?(@date + 30)
+    assert te.includes?(@date)
+    assert te.includes?(@date + 1)
+    assert ! te.includes?(@date + 30)
   end
 end
 

@@ -7,7 +7,7 @@ module TExp
     end
 
     # Is +date+ included in the temporal expression.
-    def include?(date)
+    def includes?(date)
       @months.include?(date.month)
     end
 
@@ -23,10 +23,5 @@ module TExp
       codes << encoding_token
     end
 
-    def to_hash
-      build_hash do |b|
-        b.with @months
-      end
-    end
   end
 end

@@ -1,3 +1,16 @@
+2008-03-08  Jim Weirich  <jim@tardis.local>
+
+	* Rakefile (RCov): Added an rcov task.  Removed a number of unused
+	functions.
+
+	* (svn): Removed to_hash for now, may revisit later.  Removed
+	core.rb.
+
+	* lib/texp/day_interval.rb (TExp::DayInterval::include): Interval
+	now properaly handling intervals without start dates.
+
+	* lib/texp/operators.rb (TExp::Base): Added operators.
+
 2008-03-07  Jim Weirich  <jim@tardis.local>
 
 	* lib/texp/base.rb (TExp::SingleTermBase): Created a
