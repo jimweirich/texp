@@ -1,5 +1,7 @@
 2008-03-08  Jim Weirich  <jim@tardis.local>
 
+	* lib/texp/version.rb (TExp): Bumped to version 0.0.7
+
 	* Rakefile (RCov): Added an rcov task.  Removed a number of unused
 	functions.
 
