@@ -5,10 +5,18 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/gempackagetask'
 
+$:.unshift 'lib'
+require 'texp/version'
+PACKAGE_VERSION = TExp::VERSION
+
 CLEAN.include("*.tmp")
 CLOBBER.include('coverage', 'rcov_aggregate')
 
 task :default => "test:units"
+
+task :version do
+  puts "TExp Version #{PACKAGE_VERSION}"
+end
 
 namespace "test" do
   Rake::TestTask.new(:units) do |t|
@@ -33,7 +41,6 @@ end
 
 desc "Generate the TAGS file"
 task :tags => ["tags:emacs"]
-
 
 begin
   require 'rcov/rcovtask'
@@ -73,10 +80,6 @@ PKG_FILES = FileList[
   'test/**/*.rb',
   'doc/**/*'
 ]
-
-$:.unshift 'lib'
-require 'texp/version'
-PACKAGE_VERSION = TExp::VERSION
 
 if ! defined?(Gem)
   puts "Package Target requires RubyGEMs"

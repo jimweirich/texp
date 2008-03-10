@@ -25,7 +25,7 @@ can combine them into a single holiday expression thusly:
   * Day of Week (see DayOfWeek)
   * Day of Month (see DayOfMonth)
   * Week of Month (See Week)
-  * Speicifc Month (See Month)
+  * Specific Month (See Month)
   * Specific Year (See Year)
 
 * Composite Expressions for:
