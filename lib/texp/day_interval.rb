@@ -38,7 +38,7 @@ module TExp
       elsif @interval == 2
         "every other #{interval_unit}"
       else
-        "every #{@interval} #{interval_unit.pluralize}"
+        "every #{@interval} #{pluralize(interval_unit)}"
       end
     end
 
@@ -53,6 +53,10 @@ module TExp
     end
 
     private
+
+    def pluralize(word)
+      "#{word}s"
+    end
 
     def base_mjd
       @base_date.mjd
