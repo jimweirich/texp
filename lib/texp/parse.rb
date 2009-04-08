@@ -37,6 +37,10 @@ module TExp
       @stack.pop
     end
 
+    def parse_callbacks
+      PARSE_CALLBACKS
+    end
+    
     private
 
     # Compile the token into the current definition.

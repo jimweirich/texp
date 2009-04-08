@@ -2,8 +2,16 @@ module TExp
   class DayInterval < Base
     register_parse_callback('i')
 
-    attr_reader :base_date
+    attr_reader :base_date, :interval
 
+    def day_multiplier
+      1
+    end
+    
+    def interval_unit
+      "day"
+    end
+    
     def initialize(base_date, interval)
       @base_date = base_date.kind_of?(Date) ? base_date : nil
       @interval = interval
@@ -14,7 +22,7 @@ module TExp
       if @base_date.nil? || date < @base_date
         false
       else
-        ((date.mjd - base_mjd) % @interval) == 0
+        ((date.mjd - base_mjd) % (@interval * day_multiplier)) == 0
       end
     end
 
@@ -26,9 +34,11 @@ module TExp
     # Human readable version of the temporal expression.
     def inspect
       if @interval == 1
-        "every day starting on #{humanize_date(@base_date)}"
+        "every #{interval_unit}"
+      elsif @interval == 2
+        "every other #{interval_unit}"
       else
-        "every #{ordinal(@interval)} day starting on #{humanize_date(@base_date)}"
+        "every #{@interval} #{interval_unit.pluralize}"
       end
     end
 
@@ -52,7 +62,7 @@ module TExp
       def parse_callback(stack)
         interval = stack.pop
         date = stack.pop
-        stack.push TExp::DayInterval.new(date, interval)
+        stack.push self.new(date, interval)
       end
     end
   end
