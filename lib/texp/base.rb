@@ -13,6 +13,10 @@ module TExp
       codes.join("")
     end
 
+    def include?(*args)
+      raise "Use includes? instead"
+    end
+
     # Create a new temporal expression with a new anchor date.
     def reanchor(date)
       self
