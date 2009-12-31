@@ -1,4 +1,10 @@
 module TExp
+  
+  class TExpError < StandardError
+  end
+  
+  class TExpIncludeError < TExpError
+  end
 
   ####################################################################
   # Abstract Base class for all Texp Temporal Expressions.
@@ -14,7 +20,7 @@ module TExp
     end
 
     def include?(*args)
-      raise "Use includes? instead"
+      raise TExpIncludeError, "Use includes? rather than include?"
     end
 
     # Create a new temporal expression with a new anchor date.

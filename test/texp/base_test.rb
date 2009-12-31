@@ -18,7 +18,7 @@ class BaseEachTest < Test::Unit::TestCase
   end
 
   def test_complains_about_include
-    assert_raise RuntimeError do
+    assert_raise TExp::TExpIncludeError do
       basic_texp.include? Date.parse("Feb 1, 2009")
     end
   end
