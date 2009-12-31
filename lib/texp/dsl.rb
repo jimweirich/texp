@@ -164,7 +164,7 @@ module TExp
     # Evaluate a temporal expression in the TExp environment.
     # Redirect missing method calls to the containing environment.
     def evaluate_expression_in_environment(&block) # :nodoc:
-      env = EvalEnvironment.new(block)
+      env = EvalEnvironment.new(block.binding)
       env.instance_eval(&block)
     end
 
