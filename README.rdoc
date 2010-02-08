@@ -92,6 +92,9 @@ can combine them into a single holiday expression thusly:
    te.include?(Date.parse("Apr 7, 2008"))    # => false
 
 
-== Source Repository
+== Links
 
-TExp is available on GitHub at: http://github.com/jimweirich/texp.
+Documents::       http://github.com/jimweirich/texp
+Git Clone::       git://github.com/jimweirich/texp.git
+Issue Tracking::  http://www.pivotaltracker.com/projects/42967
+Bug Reporting::   http://onestepback.org/cgi-bin/bugs.cgi?project=texp
