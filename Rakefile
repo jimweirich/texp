@@ -64,9 +64,9 @@ rd = Rake::RDocTask.new("rdoc") { |rdoc|
   rdoc.template = 'doc/jamis.rb'
   rdoc.title    = "TExp - Temporal Expression Library for Ruby"
   rdoc.options << '--line-numbers' << '--inline-source' <<
-    '--main' << 'README' <<
+    '--main' << 'README.rdoc' <<
     '--title' <<  'TExp - Temporal Expressions' 
-  rdoc.rdoc_files.include('README', 'MIT-LICENSE', 'ChangeLog')
+  rdoc.rdoc_files.include('README.rdoc', 'MIT-LICENSE', 'ChangeLog')
   rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
 }
 
