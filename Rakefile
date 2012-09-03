@@ -2,8 +2,8 @@
 
 require 'rake/clean'
 require 'rake/testtask'
-require 'rake/rdoctask'
-require 'rake/gempackagetask'
+require 'rdoc/task'
+require 'rubygems/package_task'
 
 $:.unshift 'lib'
 require 'texp/version'
@@ -21,6 +21,7 @@ end
 namespace "test" do
   Rake::TestTask.new(:units) do |t|
     t.verbose = true
+    t.libs << "."
     t.test_files = FileList['test/**/*_test.rb']
   end
 end
@@ -42,22 +43,6 @@ end
 desc "Generate the TAGS file"
 task :tags => ["tags:emacs"]
 
-begin
-  require 'rcov/rcovtask'
-
-  Rcov::RcovTask.new do |t|
-    t.libs << "test"
-    t.rcov_opts = [
-      '-xRakefile', '-xrakefile', '-xpublish.rf', '--text-report',
-    ]
-    t.test_files = FileList['test/**/*_test.rb']
-    t.output_dir = 'coverage'
-    t.verbose = true
-  end
-rescue LoadError
-  puts "RCov is not available"
-end
-
 # RDoc Task
 rd = Rake::RDocTask.new("rdoc") { |rdoc|
   rdoc.rdoc_dir = 'html'
@@ -65,7 +50,7 @@ rd = Rake::RDocTask.new("rdoc") { |rdoc|
   rdoc.title    = "TExp - Temporal Expression Library for Ruby"
   rdoc.options << '--line-numbers' << '--inline-source' <<
     '--main' << 'README.rdoc' <<
-    '--title' <<  'TExp - Temporal Expressions' 
+    '--title' <<  'TExp - Temporal Expressions'
   rdoc.rdoc_files.include('README.rdoc', 'MIT-LICENSE', 'ChangeLog')
   rdoc.rdoc_files.include('lib/**/*.rb', 'doc/**/*.rdoc')
 }
@@ -76,7 +61,7 @@ rd = Rake::RDocTask.new("rdoc") { |rdoc|
 
 PKG_FILES = FileList[
   '[A-Z]*',
-  'lib/**/*.rb', 
+  'lib/**/*.rb',
   'test/**/*.rb',
   'doc/**/*'
 ]
@@ -89,7 +74,7 @@ else
     s.version = PACKAGE_VERSION
     s.summary = "Temporal Expressions for Ruby."
     s.description = <<-EOF
-      TExp is a temporal expression library for Ruby with a modular, 
+      TExp is a temporal expression library for Ruby with a modular,
       extensible expression serialization language.
     EOF
     s.files = PKG_FILES.to_a
@@ -103,9 +88,8 @@ else
     s.rubyforge_project = "texp"
   end
 
-  package_task = Rake::GemPackageTask.new(spec) do |pkg|
+  package_task = Gem::PackageTask.new(spec) do |pkg|
     pkg.need_zip = true
     pkg.need_tar = true
   end
 end
-
