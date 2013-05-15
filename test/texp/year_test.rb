@@ -17,7 +17,7 @@ class YearTest < Test::Unit::TestCase
     assert ! te.includes?(@date + 365)
   end
 
-  def test_single_arg
+  def test_two_args
     te = TExp::Year.new([2007,2008])
     assert te.includes?(@date - 365)
     assert te.includes?(@date)
@@ -25,4 +25,3 @@ class YearTest < Test::Unit::TestCase
     assert ! te.includes?(@date + 365)
   end
 end
-
