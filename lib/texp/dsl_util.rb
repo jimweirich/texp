@@ -101,6 +101,29 @@ module TExp
           DAYNAMES.index(dow_thing.to_s[0,2].downcase)
         end
       end
+
+      # Evaluate a temporal expression in the TExp environment.
+      # Redirect missing method calls to the containing environment.
+      def evaluate_expression_in_environment(&block) # :nodoc:
+        env = EvalEnvironment.new(block.binding)
+        env.instance_eval(&block)
+      end
+
+      def normalize_units(args)   # :nodoc:
+        result = []
+        while ! args.empty?
+          arg = args.shift
+          case arg
+          when Numeric
+            result.push(arg)
+          when Symbol
+            result.push(Util.apply_units(arg, result.pop))
+          else
+            fail ArgumentError, "Unabled to recognize #{arg.inspect}"
+          end
+        end
+        result
+      end
     end
   end
 

@@ -160,30 +160,8 @@ module TExp
       value = Util.apply_units(unit, n)
       TExp::DayInterval.new(start_date, value)
     end
-
-    # Evaluate a temporal expression in the TExp environment.
-    # Redirect missing method calls to the containing environment.
-    def evaluate_expression_in_environment(&block) # :nodoc:
-      env = EvalEnvironment.new(block.binding)
-      env.instance_eval(&block)
-    end
-
-    def normalize_units(args)   # :nodoc:
-      result = []
-      while ! args.empty?
-        arg = args.shift
-        case arg
-        when Numeric
-          result.push(arg)
-        when Symbol
-          result.push(Util.apply_units(arg, result.pop))
-        else
-          fail ArgumentError, "Unabled to recognize #{arg.inspect}"
-        end
-      end
-      result
-    end
   end
+
   extend DSL
 end
 
@@ -196,5 +174,5 @@ end
 #   texp { day(1) * month(:feb) }   # Match the first of February (any year)
 #
 def texp(&block)
-  TExp.evaluate_expression_in_environment(&block)
+  TExp::DSL::Util.evaluate_expression_in_environment(&block)
 end

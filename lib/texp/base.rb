@@ -84,7 +84,7 @@ module TExp
     #                          # and 2 weeks after any match.
     #
     def window(*args)
-      prewindow, postwindow = TExp.normalize_units(args)
+      prewindow, postwindow = TExp::DSL::Util.normalize_units(args)
       postwindow ||= prewindow
       TExp::Window.new(self, prewindow, postwindow)
     end
