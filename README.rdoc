@@ -141,6 +141,18 @@ that will match Christmas or New Year's day.
     TExp::And.new( TExp::DayOfMonth.new(25), TExp::Month(12) ),
     TExp::And.new( TExp::DayOfMonth.new(1),  TExp::Month(1)  ))
 
+=== Excluding Days
+
+Suppose Casual Friday happens every Friday, except for the last Friday
+of the month. We can represent it like so:
+
+  fridays = dow(:fri)
+  last_friday = week(:last) * dow(:fri)
+  casual_fridays = fridays - last_friday
+
+  casual_fridays.includes?(Date.new(2013, 6, 21))  # => true
+  casual_fridays.includes?(Date.new(2013, 6, 28))  # => false
+
 == Links
 
 Documents   :: http://github.com/jimweirich/texp
