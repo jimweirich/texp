@@ -210,7 +210,9 @@ module TExp
       }
 
       def apply_units(unit, value)
-        UNIT_MULTIPLIERS[unit] * value
+        multiplier = UNIT_MULTIPLIERS[unit]
+        raise TExpUnitError, "Unknown unit #{unit}" unless multiplier
+        multiplier * value
       end
 
       def try_parsing(string)

@@ -225,6 +225,14 @@ class DslTest < Minitest::Test
     assert_not_includes te, date+1*365, date+2*365, date+4*365
   end
 
+  def test_interval_dsl_with_years
+    ex = assert_raises(TExp::TExpUnitError) do
+      te = TExp.every(3, :aeons)
+    end
+    assert_match /unknown unit/i, ex.message
+    assert_match /aeons/i, ex.message
+  end
+
   def test_window_dsl
     date = Date.today
     te = TExp.on(date).window(1,2)

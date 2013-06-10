@@ -1,10 +1,8 @@
 module TExp
 
-  class TExpError < StandardError
-  end
-
-  class TExpIncludeError < TExpError
-  end
+  TExpError        = Class.new(StandardError)
+  TExpIncludeError = Class.new(TExpError)
+  TExpUnitError    = Class.new(TExpError)
 
   ####################################################################
   # Abstract Base class for all Texp Temporal Expressions.
