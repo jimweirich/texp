@@ -1,25 +1,18 @@
+require 'texp/date_part_expression'
+
 module TExp
-  class Year < Expression
+  class Year < DatePartExpression
     register_parse_callback('y')
-
-    def initialize(years)
-      @years = listize(years)
-    end
-
-    # Is +date+ included in the temporal expression.
-    def includes?(date)
-      @years.include?(date.year)
-    end
 
     # Human readable version of the temporal expression.
     def inspect
-      "the year is " + humanize_list(@years)
+      "the year is " + humanize_list(@parts)
     end
 
-    # Encode the temporal expression into +codes+.
-    def encode(codes)
-      encode_list(codes, @years)
-      codes << encoding_token
+    private
+
+    def extract_part(date)
+      date.year
     end
   end
 end

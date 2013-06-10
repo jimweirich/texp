@@ -1,25 +1,18 @@
+require 'texp/date_part_expression'
+
 module TExp
-  class DayOfMonth < Expression
+  class DayOfMonth < DatePartExpression
     register_parse_callback('d')
-
-    def initialize(days)
-      @days = listize(days)
-    end
-
-    # Is +date+ included in the temporal expression.
-    def includes?(date)
-      @days.include?(date.day)
-    end
 
     # Human readable version of the temporal expression.
     def inspect
-      "the day of the month is the " + ordinal_list(@days)
+      "the day of the month is the " + ordinal_list(@parts)
     end
 
-    # Encode the temporal expression into +codes+.
-    def encode(codes)
-      encode_list(codes, @days)
-      codes << encoding_token
+    private
+
+    def extract_part(date)
+      date.day
     end
   end
 end
