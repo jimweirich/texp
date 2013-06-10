@@ -225,7 +225,7 @@ module TExp
   ####################################################################
   # Base class for temporal expressions with a single sub-expressions
   # (i.e. term).
-  class SingleTermBase < Expression
+  class SingleTermExpression < Expression
     # Create a single term temporal expression.
     def initialize(term)
       @term = term
@@ -249,7 +249,7 @@ module TExp
   ####################################################################
   # Base class for temporal expressions with multiple sub-expressions
   # (i.e. terms).
-  class MultiTermBase < Expression
+  class MultiTermExpression < Expression
 
     # Create an multi-term temporal expression.
     def initialize(*terms)

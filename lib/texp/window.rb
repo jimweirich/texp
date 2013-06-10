@@ -1,5 +1,5 @@
 module TExp
-  class Window < SingleTermBase
+  class Window < SingleTermExpression
     register_parse_callback('s')
 
     def initialize(texp, prewindow_days, postwindow_days)

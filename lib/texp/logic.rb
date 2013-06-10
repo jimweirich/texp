@@ -3,7 +3,7 @@ module TExp
   ####################################################################
   # Logically AND a list of temporal expressions.  A date is included
   # only if it is included in all of the sub-expressions.
-  class And < MultiTermBase
+  class And < MultiTermExpression
     register_parse_callback('a')
 
     # Is +date+ included in the temporal expression.
@@ -26,7 +26,7 @@ module TExp
   ####################################################################
   # Logically OR a list of temporal expressions.  A date is included
   # if it is included in any of the sub-expressions.
-  class Or < MultiTermBase
+  class Or < MultiTermExpression
     register_parse_callback('o')
 
     # Is +date+ included in the temporal expression.
@@ -49,7 +49,7 @@ module TExp
   ####################################################################
   # Logically NEGATE a temporal expression.  A date is included if it
   # is not included in the sub-expression.
-  class Not < SingleTermBase
+  class Not < SingleTermExpression
     register_parse_callback('n')
 
     # Is date included in the temporal expression.
