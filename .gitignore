@@ -1,3 +1,5 @@
-html
+*.bak
+Gemfile.lock
 TAGS
+html
 pkg
