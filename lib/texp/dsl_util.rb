@@ -26,21 +26,53 @@ module TExp
         :year => 365,   :years => 365,
       }
 
+      def on_this_date(*args)
+        case args.size
+        when 1
+          date = Util.coerce_date(args.first)
+          on_this_day_month_year(date.day, date.month, date.year)
+        when 2
+          on_this_day_month(*dm_args(args))
+        when 3
+          on_this_day_month_year(*dmy_args(args))
+        else
+          fail ArgumentError
+        end
+      end
+
+      def on_this_day_month(day, month)
+        TExp::And.new(
+          TExp::DayOfMonth.new(day),
+          TExp::Month.new(month))
+      end
+
+      def on_this_day_month_year(day, month, year)
+        TExp::And.new(
+          TExp::DayOfMonth.new(day),
+          TExp::Month.new(Util.normalize_month(month)),
+          TExp::Year.new(year))
+      end
+
       def apply_units(unit, value)
         multiplier = UNIT_MULTIPLIERS[unit]
         raise TExpUnitError, "Unknown unit #{unit}" unless multiplier
         multiplier * value
       end
 
-      def coerce_date(date)
-        case date
-        when Date
-          date
+      def coerce_date(date_like)
+        case date_like
         when String
-          try_parsing(date)
+          result = try_parsing(date_like)
+        when Date
+          result = date_like
         else
-          fail ArgumentError, "Unknown date '#{date}'"
+          if date_like.respond_to?(:to_date)
+            result = date_like.to_date
+          else
+            result = try_parsing(date_like.to_s)
+          end
         end
+        result
       end
 
       def try_parsing(string)

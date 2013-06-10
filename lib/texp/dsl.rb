@@ -110,35 +110,7 @@ module TExp
     #   on(Date.new(2008, 2, 14))
     #
     def on(*args)
-      if args.size == 1
-        arg = args.first
-        case arg
-        when String
-          date = Date.parse(arg)
-        when Date
-          date = arg
-        else
-          if arg.respond_to?(:to_date)
-            date = arg.to_date
-          else
-            date = Util.try_parsing(arg.to_s)
-          end
-        end
-        on(date.day, date.month, date.year)
-      elsif args.size == 2
-        day, month = Util.dm_args(args)
-        TExp::And.new(
-          TExp::DayOfMonth.new(day),
-          TExp::Month.new(month))
-      elsif args.size == 3
-        day, month, year = Util.dmy_args(args)
-        TExp::And.new(
-          TExp::DayOfMonth.new(day),
-          TExp::Month.new(Util.normalize_month(month)),
-          TExp::Year.new(year))
-      else
-        fail ArgumentError
-      end
+      Util.on_this_date(*args)
     rescue ArgumentError => ex
       msg = "Invalid arguments for on(): #{args.inspect}"
       msg << " (#{ex.message})" if ex.message != "ArgumentError"

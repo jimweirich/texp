@@ -21,6 +21,5 @@ module TExp
       encode_list(codes, @years)
       codes << encoding_token
     end
-
   end
 end

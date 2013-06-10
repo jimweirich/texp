@@ -13,8 +13,7 @@ module TExp
 
     # Human readable version of the temporal expression.
     def inspect
-      "the day of the month is the " +
-        ordinal_list(@days)
+      "the day of the month is the " + ordinal_list(@days)
     end
 
     # Encode the temporal expression into +codes+.

@@ -104,20 +104,24 @@ module TExp
 
     # Encode the list into the codes receiver.  All
     def encode_list(codes, list)
-      if list.empty?
-        codes << "[]"
-      elsif list.size == 1
+      if list.size == 1
         codes << list.first
       else
         codes << "["
         prev = nil
         list.each do |item|
-          codes << "," if prev && ! prev.kind_of?(TExp::Expression)
+          codes << "," if encoded_separator_needed?(prev)
           codes << item.to_s
           prev = item
         end
         codes << "]"
       end
+    end
+
+    # We need a separator if the previous expression existed and was
+    # not a TExp::Expression.
+    def encoded_separator_needed?(prev)
+      prev && ! prev.kind_of?(TExp::Expression)
     end
 
     # For the list of integers as a list of ordinal numbers.  By
@@ -132,7 +136,7 @@ module TExp
     # c")
     def humanize_list(list, connector='or', &block)
       block ||= lambda { |item| item.to_s }
-      list = list.sort if list.all? { |item| item.kind_of?(Integer) && item >= 0 }
+      list = sensible_sort(list)
       case list.size
       when 1
         block.call(list.first)
@@ -141,6 +145,15 @@ module TExp
           block.call(d)
         }.join(", ") +
           " #{connector} " + block.call(list.last)
+      end
+    end
+
+    # Sort the list only if it is a list of non-negative integers.
+    def sensible_sort(list)
+      if list.all? { |item| item.kind_of?(Integer) && item >= 0 }
+        list.sort
+      else
+        list
       end
     end
 
