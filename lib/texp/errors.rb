@@ -1,18 +1,12 @@
 module TExp
 
   # Base error for TExp specific exceptions.
-  class Error < StandardError
-  end
+  Error = Class.new(StandardError)
 
-  
-  # Thrown by internal methods in the date() builder.  These
-  # exceptions are caught and uniformly reraised as Ruby
-  # ArgumentErrors.
-  class DateArgumentError < Error
-  end
+  # Raised when the units on the every method are not recognized.
+  TExpUnitError    = Class.new(TExp::Error)
 
-  # Thrown if an error is encountered during the parsing of a temporal
+  # Raised if an error is encountered during the parsing of a temporal
   # expression.
-  class ParseError < Error
-  end
+  ParseError = Class.new(TExp::Error)
 end

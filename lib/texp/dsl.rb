@@ -137,10 +137,12 @@ module TExp
           TExp::Month.new(Util.normalize_month(month)),
           TExp::Year.new(year))
       else
-        fail DateArgumentError
+        fail ArgumentError
       end
-    rescue DateArgumentError
-      fail ArgumentError, "Invalid arguents for on(): #{args.inspect}"
+    rescue ArgumentError => ex
+      msg = "Invalid arguments for on(): #{args.inspect}"
+      msg << " (#{ex.message})" if ex.message != "ArgumentError"
+      fail ArgumentError, msg
     end
 
     # Return a temporal expression matching the given days of the
@@ -156,9 +158,22 @@ module TExp
       TExp::DayOfWeek.new(Util.normalize_dows(dow))
     end
 
+    # Return a temporal expression matching the nth day, starting at
+    # the +start_date+. +n+ is scaled appropriately by +unit+. E.g.
+    # "every(2,:weeks)" is the same as "every(14,:days)".
+    #
+    # <b>Examples:</b>
+    #
+    #   every(2, :days)       # Every other day, starting today.
+    #   every(2, :weeks, "2013-01-01")
+    #                         # Every 14 days, starting Jan 1, 2013
+    #
+    # NOTE: :months scales by 30 days, :years scale by 365 days. This
+    #       might not be what you expect.
     def every(n, unit, start_date=Date.today)
       value = Util.apply_units(unit, n)
-      TExp::DayInterval.new(start_date, value)
+      date = Util.coerce_date(start_date)
+      TExp::DayInterval.new(date, value)
     end
   end
 

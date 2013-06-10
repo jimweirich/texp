@@ -32,10 +32,21 @@ module TExp
         multiplier * value
       end
 
+      def coerce_date(date)
+        case date
+        when Date
+          date
+        when String
+          try_parsing(date)
+        else
+          fail ArgumentError, "Unknown date '#{date}'"
+        end
+      end
+
       def try_parsing(string)
         Date.parse(string)
-      rescue ArgumentError
-        fail DateArgumentError
+      rescue ArgumentError => ex
+        fail ArgumentError, "Unknown date '#{string}' (#{ex.message})"
       end
 
       def dm_args(args)
@@ -54,12 +65,14 @@ module TExp
 
       def check_valid_day_month(day, month)
         unless day.kind_of?(Integer) &&
-            month.kind_of?(Integer) &&
-            month >= 1 &&
-            month <= 12 &&
             day >= 1 &&
             day <= 31
-          fail DateArgumentError
+          fail ArgumentError, "bad day '#{month}'"
+        end
+        unless month.kind_of?(Integer) &&
+            month >= 1 &&
+            month <= 12
+          fail ArgumentError, "bad month '#{month}'"
         end
       end
 
