@@ -5,7 +5,7 @@ module TExp
     def initialize(texp, prewindow_days, postwindow_days)
       super(texp)
       @prewindow_days = prewindow_days
-      @postwindow_days = postwindow_days      
+      @postwindow_days = postwindow_days
     end
 
     # Is +date+ included in the temporal expression.
@@ -56,15 +56,12 @@ module TExp
       n == 1 ? "#{n} day" : "#{n} days"
     end
 
-    class << self
-      # Parsing callback for window temporal expressions.
-      def parse_callback(stack)
-        postwindow = stack.pop
-        prewindow = stack.pop
-        te = stack.pop
-        stack.push TExp::Window.new(te, prewindow, postwindow)
-      end
-    end # class << self
-
+    # Parsing callback for window temporal expressions.
+    def self.parse_callback(stack)
+      postwindow = stack.pop
+      prewindow = stack.pop
+      te = stack.pop
+      stack.push TExp::Window.new(te, prewindow, postwindow)
+    end
   end
 end

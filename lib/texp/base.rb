@@ -202,24 +202,25 @@ module TExp
       builder.hash
     end
 
-    class << self
-      # The token to be used for encoding this temporal expression.
-      attr_reader :encoding_token
+    # The token to be used for encoding this temporal expression.
+    def self.encoding_token
+      @encoding_token
+    end
 
-      # Register a parse callack for the encoding token for this
-      # class.
-      def register_parse_callback(token, callback=self)
-        @encoding_token = token if callback == self
-        TExp.register_parse_callback(token, callback)
-      end
+    # Register a parse callack for the encoding token for this
+    # class.
+    def self.register_parse_callback(token, callback=self)
+      @encoding_token = token if callback == self
+      TExp.register_parse_callback(token, callback)
+    end
 
-      # The default parsing callback for single argument time
-      # expressions.  Override if you need anything more complicated.
-      def parse_callback(stack)
-        stack.push new(stack.pop)
-      end
-    end # class << self
-  end # class Base
+    # The default parsing callback for single argument time
+    # expressions.  Override if you need anything more complicated.
+    def self.parse_callback(stack)
+      stack.push new(stack.pop)
+    end
+  end
+
 
   ####################################################################
   # Base class for temporal expressions with a single sub-expressions
@@ -242,7 +243,8 @@ module TExp
       yield @term
       yield self
     end
-  end # class SingleTermBase
+  end
+
 
   ####################################################################
   # Base class for temporal expressions with multiple sub-expressions
@@ -271,14 +273,11 @@ module TExp
       yield self
     end
 
-    class << self
-      # Parsing callback for terms based temporal expressions.  The
-      # top of the stack is assumed to be a list that is *-expanded to
-      # the temporal expression's constructor.
-      def parse_callback(stack)
-        stack.push self.new(*stack.pop)
-      end
+    # Parsing callback for terms based temporal expressions.  The
+    # top of the stack is assumed to be a list that is *-expanded to
+    # the temporal expression's constructor.
+    def self.parse_callback(stack)
+      stack.push self.new(*stack.pop)
     end
-  end # class << self
-
-end # class MultiTermBase
+  end
+end

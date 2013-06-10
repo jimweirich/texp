@@ -1,66 +1,58 @@
 module TExp
-
-  # ------------------------------------------------------------------
   # Class methods.
-  #
-  class << self
-    PARSE_CALLBACKS = {}        # :nodoc:
+  PARSE_CALLBACKS = {}        # :nodoc:
 
-    # Lexical Definitions
-    TOKEN_PATTERNS = [
-      # Dates
-      '\d\d\d\d-\d\d-\d\d',
-      # Numbers
-      '[+-]?\d+',
-      # Extension Tokens
-      '<(?:[a-zA-Z_][a-zA-Z0-9_]*::)?[a-zA-Z_][a-zA-Z0-9_]*>',
-      # Everything else is a single character
-      # (except commas and spaces which are ignored)
-      '[^, ]',
-    ].join('|')                           # :nodoc:
-    TOKEN_RE = Regexp.new(TOKEN_PATTERNS) # :nodoc:
+  # Lexical Definitions
+  TOKEN_PATTERNS = [
+    # Dates
+    '\d\d\d\d-\d\d-\d\d',
+    # Numbers
+    '[+-]?\d+',
+    # Extension Tokens
+    '<(?:[a-zA-Z_][a-zA-Z0-9_]*::)?[a-zA-Z_][a-zA-Z0-9_]*>',
+    # Everything else is a single character
+    # (except commas and spaces which are ignored)
+    '[^, ]',
+  ].join('|')                           # :nodoc:
+  TOKEN_RE = Regexp.new(TOKEN_PATTERNS) # :nodoc:
 
-    # Register a parsing callback.  Individual Temporal Expression
-    # classes will register their own callbacks as needed.  A handful
-    # of non-class based parser callbacks are registered below.
-    def register_parse_callback(token, callback)
-      PARSE_CALLBACKS[token] = callback
+  # Register a parsing callback.  Individual Temporal Expression
+  # classes will register their own callbacks as needed.  A handful
+  # of non-class based parser callbacks are registered below.
+  def self.register_parse_callback(token, callback)
+    PARSE_CALLBACKS[token] = callback
+  end
+
+  # Return the temporal expression encoded by string.
+  def self.parse(string)
+    @stack = []
+    string.scan(TOKEN_RE) do |tok|
+      compile(tok)
     end
+    fail ParseError, "Incomplete expression" if @stack.size > 1
+    @stack.pop
+  end
 
-    # Return the temporal expression encoded by string.
-    def parse(string)
-      @stack = []
-      string.scan(TOKEN_RE) do |tok|
-        compile(tok)
-      end
-      fail ParseError, "Incomplete expression" if @stack.size > 1
-      @stack.pop
-    end
+  def self.parse_callbacks
+    PARSE_CALLBACKS
+  end
 
-    def parse_callbacks
-      PARSE_CALLBACKS
-    end
-
-    private
-
-    # Compile the token into the current definition.
-    def compile(tok)
-      handler = PARSE_CALLBACKS[tok]
-      if handler
-        handler.parse_callback(@stack)
+  # Compile the token into the current definition.
+  def self.compile(tok)
+    handler = PARSE_CALLBACKS[tok]
+    if handler
+      handler.parse_callback(@stack)
+    else
+      case tok
+      when /^\d\d\d\d-\d\d-\d\d/
+        @stack.push Date.parse(tok)
+      when /^[-+]?\d+$/
+        @stack.push tok.to_i
       else
-        case tok
-        when /^\d\d\d\d-\d\d-\d\d/
-          @stack.push Date.parse(tok)
-        when /^[-+]?\d+$/
-          @stack.push tok.to_i
-        else
-          fail ParseError, "Unrecognized TExp Token '#{tok}'"
-        end
+        fail ParseError, "Unrecognized TExp Token '#{tok}'"
       end
     end
-
-  end # << TExp
+  end
 
   # Convenience class for creating parse callbacks.
   class ParseCallback
@@ -95,4 +87,4 @@ module TExp
       stack.push list
     end
     )
-end # module TExp
+end

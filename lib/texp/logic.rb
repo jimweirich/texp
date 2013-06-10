@@ -21,7 +21,7 @@ module TExp
       encode_list(codes, @terms)
       codes << encoding_token
     end
-  end # class And
+  end
 
   ####################################################################
   # Logically OR a list of temporal expressions.  A date is included
@@ -44,7 +44,7 @@ module TExp
       encode_list(codes, @terms)
       codes << encoding_token
     end
-  end # class Or
+  end
 
   ####################################################################
   # Logically NEGATE a temporal expression.  A date is included if it
@@ -67,6 +67,5 @@ module TExp
       @term.encode(codes)
       codes << encoding_token
     end
-  end # class Not
-  
+  end
 end

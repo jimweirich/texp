@@ -7,11 +7,11 @@ module TExp
     def day_multiplier
       1
     end
-    
+
     def interval_unit
       "day"
     end
-    
+
     def initialize(base_date, interval)
       @base_date = base_date.kind_of?(Date) ? base_date : nil
       @interval = interval
@@ -62,12 +62,10 @@ module TExp
       @base_date.mjd
     end
 
-    class << self
-      def parse_callback(stack)
-        interval = stack.pop
-        date = stack.pop
-        stack.push self.new(date, interval)
-      end
+    def self.parse_callback(stack)
+      interval = stack.pop
+      date = stack.pop
+      stack.push self.new(date, interval)
     end
   end
 end

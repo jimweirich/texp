@@ -39,26 +39,24 @@ module TExp
           codes << "<MyExt::never>"
         end
 
-        class << self
-          # Define a parse handler that will handle your registered
-          # parse token.  At the point the handler is called,
-          # arguments will have been pushed onto the stack.  All you
-          # have to do is pop them off, construct your temporal
-          # expression and push it back onto the stack.
-          #
-          # See TExp::DayInterval for an example of an expression that
-          # handle arguments.
-          #
-          def parse_callback(stack)
-            stack.push new
-          end
+        # Define a parse handler that will handle your registered
+        # parse token.  At the point the handler is called,
+        # arguments will have been pushed onto the stack.  All you
+        # have to do is pop them off, construct your temporal
+        # expression and push it back onto the stack.
+        #
+        # See TExp::DayInterval for an example of an expression that
+        # handle arguments.
+        #
+        def self.parse_callback(stack)
+          stack.push new
         end
       end
 
-    end # module MyExt
+    end
 
-  end # module Extensions
-end # module TExp
+  end
+end
 
 class ExtensionsTest < Minitest::Test
   def test_never

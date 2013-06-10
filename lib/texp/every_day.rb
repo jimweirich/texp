@@ -17,10 +17,8 @@ module TExp
       codes << encoding_token
     end
 
-    class << self
-      def parse_callback(stack)
-        stack.push TExp::EveryDay.new
-      end
+    def self.parse_callback(stack)
+      stack.push TExp::EveryDay.new
     end
   end
 end
