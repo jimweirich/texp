@@ -35,7 +35,7 @@ module TExp
     #   week(:last)   # Match any date in the last 7 days of any month.
     #
     def week(*weeks)
-      TExp::Week.new(normalize_weeks(weeks))
+      TExp::Week.new(Util.normalize_weeks(weeks))
     end
 
     # Return a temporal expression that matches any date in the list
@@ -50,7 +50,7 @@ module TExp
     #                         # Match any date in any month with 30 days.
     #
     def month(*month)
-      TExp::Month.new(normalize_months(month))
+      TExp::Month.new(Util.normalize_months(month))
     end
 
     # Return a temporal expression that matches the given list of
@@ -121,20 +121,20 @@ module TExp
           if arg.respond_to?(:to_date)
             date = arg.to_date
           else
-            date = try_parsing(arg.to_s)
+            date = Util.try_parsing(arg.to_s)
           end
         end
         on(date.day, date.month, date.year)
       elsif args.size == 2
-        day, month = dm_args(args)
+        day, month = Util.dm_args(args)
         TExp::And.new(
           TExp::DayOfMonth.new(day),
           TExp::Month.new(month))
       elsif args.size == 3
-        day, month, year = dmy_args(args)
+        day, month, year = Util.dmy_args(args)
         TExp::And.new(
           TExp::DayOfMonth.new(day),
-          TExp::Month.new(normalize_month(month)),
+          TExp::Month.new(Util.normalize_month(month)),
           TExp::Year.new(year))
       else
         fail DateArgumentError
@@ -142,7 +142,7 @@ module TExp
     rescue DateArgumentError
       fail ArgumentError, "Invalid arguents for on(): #{args.inspect}"
     end
-    
+
     # Return a temporal expression matching the given days of the
     # week.
     #
@@ -153,11 +153,11 @@ module TExp
     #   dow(:mon, :wed, :fr)   # Match any date on a Monday, Wednesday or Friday
     #
     def dow(*dow)
-      TExp::DayOfWeek.new(normalize_dows(dow))
+      TExp::DayOfWeek.new(Util.normalize_dows(dow))
     end
 
     def every(n, unit, start_date=Date.today)
-      value = apply_units(unit, n)
+      value = Util.apply_units(unit, n)
       TExp::DayInterval.new(start_date, value)
     end
 
@@ -176,108 +176,113 @@ module TExp
         when Numeric
           result.push(arg)
         when Symbol
-          result.push(apply_units(arg, result.pop))
+          result.push(Util.apply_units(arg, result.pop))
         else
           fail ArgumentError, "Unabled to recognize #{arg.inspect}"
         end
       end
       result
     end
-    
-    private
-    
-    WEEKNAMES = {
-      "fi" => 1,
-      "se" => 2,
-      "th" => 3,
-      "fo" => 4,
-      "fi" => 5,
-      "la" => -1
-    }
-    MONTHNAMES = Date::MONTHNAMES.collect { |mn| mn ? mn[0,3].downcase : nil }
-    DAYNAMES = Date::DAYNAMES.collect { |dn| dn[0,2].downcase }
-    
-    UNIT_MULTIPLIERS = {
-      :day => 1,      :days => 1,
-      :week => 7,     :weeks => 7,
-      :month => 30,   :months => 30,
-      :year => 365,   :years => 365,
-    }
 
-    def apply_units(unit, value)
-      UNIT_MULTIPLIERS[unit] * value
-    end
+    # Utility methods used by the DSL methods. We put the utility
+    # methods in their own module to avoid name pollution when the DSL
+    # module is included into client code.
+    #
+    module Util
+      module_function
 
-    def try_parsing(string)
-      Date.parse(string)
-    rescue ArgumentError
-      fail DateArgumentError
-    end
+      WEEKNAMES = {
+        "fi" => 1,
+        "se" => 2,
+        "th" => 3,
+        "fo" => 4,
+        "fi" => 5,
+        "la" => -1
+      }
+      MONTHNAMES = Date::MONTHNAMES.collect { |mn| mn ? mn[0,3].downcase : nil }
+      DAYNAMES = Date::DAYNAMES.collect { |dn| dn[0,2].downcase }
 
-    def dm_args(args)
-      day, month = args
-      month = normalize_month(month)
-      check_valid_day_month(day, month)
-      [day, month]
-    end
-    
-    def dmy_args(args)
-      day, month, year = args
-      month = normalize_month(month)
-      check_valid_day_month(day, month)
-      [day, month, year]
-    end
-    
-    def check_valid_day_month(day, month)
-      unless day.kind_of?(Integer) &&
-          month.kind_of?(Integer) &&
-          month >= 1 &&
-          month <= 12 &&
-          day >= 1 &&
-          day <= 31
+      UNIT_MULTIPLIERS = {
+        :day => 1,      :days => 1,
+        :week => 7,     :weeks => 7,
+        :month => 30,   :months => 30,
+        :year => 365,   :years => 365,
+      }
+
+      def apply_units(unit, value)
+        UNIT_MULTIPLIERS[unit] * value
+      end
+
+      def try_parsing(string)
+        Date.parse(string)
+      rescue ArgumentError
         fail DateArgumentError
       end
-    end
-    
-    def normalize_weeks(weeks)
-      weeks.collect { |w| normalize_week(w) }
-    end
 
-    def normalize_week(week)
-      case week
-      when Integer
-        week
-      else
-        WEEKNAMES[week.to_s[0,2].downcase]
+      def dm_args(args)
+        day, month = args
+        month = normalize_month(month)
+        check_valid_day_month(day, month)
+        [day, month]
+      end
+
+      def dmy_args(args)
+        day, month, year = args
+        month = normalize_month(month)
+        check_valid_day_month(day, month)
+        [day, month, year]
+      end
+
+      def check_valid_day_month(day, month)
+        unless day.kind_of?(Integer) &&
+            month.kind_of?(Integer) &&
+            month >= 1 &&
+            month <= 12 &&
+            day >= 1 &&
+            day <= 31
+          fail DateArgumentError
+        end
+      end
+
+      def normalize_weeks(weeks)
+        weeks.collect { |w| normalize_week(w) }
+      end
+
+      def normalize_week(week)
+        case week
+        when Integer
+          week
+        else
+          WEEKNAMES[week.to_s[0,2].downcase]
+        end
+      end
+
+      def normalize_months(months)
+        months.collect { |m| normalize_month(m) }
+      end
+
+      def normalize_month(month_thing)
+        case month_thing
+        when Integer
+          month_thing
+        else
+          MONTHNAMES.index(month_thing.to_s[0,3].downcase)
+        end
+      end
+
+      def normalize_dows(dow_list)
+        dow_list.collect { |dow| normalize_dow(dow) }
+      end
+
+      def normalize_dow(dow_thing)
+        case dow_thing
+        when Integer
+          dow_thing
+        else
+          DAYNAMES.index(dow_thing.to_s[0,2].downcase)
+        end
       end
     end
-
-    def normalize_months(months)
-      months.collect { |m| normalize_month(m) }
-    end
-
-    def normalize_month(month_thing)
-      case month_thing
-      when Integer
-        month_thing
-      else
-        MONTHNAMES.index(month_thing.to_s[0,3].downcase)
-      end
-    end
-
-    def normalize_dows(dow_list)
-      dow_list.collect { |dow| normalize_dow(dow) }
-    end
-
-    def normalize_dow(dow_thing)
-      case dow_thing
-      when Integer
-        dow_thing
-      else
-        DAYNAMES.index(dow_thing.to_s[0,2].downcase)
-      end
-    end
-
   end
 
 
@@ -307,21 +312,21 @@ module TExp
   #
   class EvalEnvironment
     include DSL
-    
+
     # Create a TExp environment for evaluating temporal expressions.
     # Use the block binding to find the object where the block is
     # embeded.
     def initialize(containing_env)
       @container = eval "self", containing_env
     end
-    
+
     # The methods identified by +sym+ is not found in the TExp
     # namespace.  Try calling it in the containing namespace.
     def method_missing(sym, *args, &block)
       @container.send(sym, *args, &block)
     end
   end
-  
+
   extend DSL
 end
 
