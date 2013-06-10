@@ -16,24 +16,23 @@ class BaseEachTest < Minitest::Test
     assert_equal [@basic, @multi], te.collect { |t| t }
   end
 
-  def test_complains_about_include
-    assert_raises TExp::TExpIncludeError do
-      basic_texp.include? Date.parse("Feb 1, 2009")
-    end
+  def test_include?
+    assert basic_texp.include?(Date.new(2001, 1, 1))
+    assert ! basic_texp.include?(Date.new(2001, 1, 2))
   end
 
   private
 
   def basic_texp
-    @basic = TExp::DayOfMonth.new(1)
+    @basic ||= TExp::DayOfMonth.new(1)
   end
 
   def single_term_texp
-    @single = TExp::Not.new(basic_texp)
+    @single ||= TExp::Not.new(basic_texp)
   end
 
   def multi_term_texp
-    @multi = TExp::And.new(basic_texp)
+    @multi ||= TExp::And.new(basic_texp)
   end
 
 end

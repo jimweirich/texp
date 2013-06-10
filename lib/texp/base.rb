@@ -1,8 +1,8 @@
 module TExp
-  
+
   class TExpError < StandardError
   end
-  
+
   class TExpIncludeError < TExpError
   end
 
@@ -10,7 +10,7 @@ module TExp
   # Abstract Base class for all Texp Temporal Expressions.
   class Base
     include Enumerable
-    
+
     # Convert the temporal expression into an encoded string (that can
     # be parsed by TExp.parse).
     def to_s
@@ -19,8 +19,9 @@ module TExp
       codes.join("")
     end
 
+    # Override Enumerable#include to alias the TExp version.
     def include?(*args)
-      raise TExpIncludeError, "Use includes? rather than include?"
+      includes?(*args)
     end
 
     # Create a new temporal expression with a new anchor date.
@@ -47,7 +48,7 @@ module TExp
     def each()                  # :yield: temporal_expression
       yield self
     end
-    
+
     # :call-seq:
     #   window(days)
     #   window(predays, postdays)
@@ -91,7 +92,7 @@ module TExp
     end
 
     private
-    
+
     # Coerce +arg+ into a list (i.e. Array) if it is not one already.
     def listize(arg)
       case arg
@@ -101,12 +102,12 @@ module TExp
         [arg]
       end
     end
-    
+
     # Encode the date into the codes receiver.
     def encode_date(codes, date)
       codes << date.strftime("%Y-%m-%d")
     end
-    
+
     # Encode the list into the codes receiver.  All
     def encode_list(codes, list)
       if list.empty?
@@ -124,7 +125,7 @@ module TExp
         codes << "]"
       end
     end
-    
+
     # For the list of integers as a list of ordinal numbers.  By
     # default, use 'or' as a connectingin word. (e.g. [1,2,3] => "1st,
     # 2nd, or 3rd")
@@ -182,7 +183,7 @@ module TExp
         ordinal(-n) + " from the last"
       else
         n.to_s + suffix(n)
-      end        
+      end
     end
 
     # The ordinal suffex appropriate for the given number.  (e.g. 1 =>
@@ -206,14 +207,14 @@ module TExp
     class << self
       # The token to be used for encoding this temporal expression.
       attr_reader :encoding_token
-      
+
       # Register a parse callack for the encoding token for this
-      # class.  
+      # class.
       def register_parse_callback(token, callback=self)
         @encoding_token = token if callback == self
         TExp.register_parse_callback(token, callback)
       end
-  
+
       # The default parsing callback for single argument time
       # expressions.  Override if you need anything more complicated.
       def parse_callback(stack)
