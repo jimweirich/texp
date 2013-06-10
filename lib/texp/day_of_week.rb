@@ -1,7 +1,7 @@
 module TExp
   class DayOfWeek < Base
     attr_reader :days
-    
+
     register_parse_callback('w')
 
     def initialize(days)
@@ -16,7 +16,7 @@ module TExp
     # Human readable version of the temporal expression.
     def inspect
       "on " +
-        humanize_list(@days, "and") { |d| Date::DAYNAMES[d] }
+        humanize_list(@days, "or") { |d| Date::DAYNAMES[d] }
     end
 
     # Encode the temporal expression into +codes+.

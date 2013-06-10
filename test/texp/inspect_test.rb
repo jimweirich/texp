@@ -6,9 +6,9 @@ class InspectTest < Minitest::Test
     assert_inspect "e", "every day"
 
     assert_inspect "0w", "on Sunday"
-    assert_inspect "[0,1]w", "on Sunday and Monday"
+    assert_inspect "[0,1]w", "on Sunday or Monday"
     assert_inspect "[0,1,4,2,3,6,5]w",
-      "on Sunday, Monday, Tuesday, Wednesday, Thursday, Friday and Saturday"
+      "on Sunday, Monday, Tuesday, Wednesday, Thursday, Friday or Saturday"
 
     assert_inspect "1d", "the day of the month is the 1st"
     assert_inspect "2d", "the day of the month is the 2nd"
