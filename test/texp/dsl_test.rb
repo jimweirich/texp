@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class BuilderTest < Minitest::Test
-  def test_day_builder
+class DslTest < Minitest::Test
+  def test_day_dsl
     date = d("Mar 12, 2008")
     te = TExp.day(12)
 
@@ -9,7 +9,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+1, date-1
   end
 
-  def test_day_builder_with_lists
+  def test_day_dsl_with_lists
     date = d("Mar 12, 2008")
     te = TExp.day(12, 13)
 
@@ -17,7 +17,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+2, date-1
   end
 
-  def test_week_builder
+  def test_week_dsl
     date = d("Mar 12, 2008")
     te = TExp.week(2)
 
@@ -25,7 +25,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+7, date-7
   end
 
-  def test_week_builder_with_lists
+  def test_week_dsl_with_lists
     date = d("Mar 12, 2008")
     te = TExp.week(2,-1)
 
@@ -33,7 +33,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+7, date-7
   end
 
-  def test_week_builder_with_symbol_weeks
+  def test_week_dsl_with_symbol_weeks
     date = d("Mar 12, 2008")
     te = TExp.week(:second,  :last)
 
@@ -41,7 +41,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+7, date-7
   end
 
-  def test_month_builder
+  def test_month_dsl
     date = d("Mar 12, 2008")
     te = TExp.month(3)
 
@@ -49,7 +49,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+31
   end
 
-  def test_month_builder_with_lists
+  def test_month_dsl_with_lists
     date = d("Mar 12, 2008")
     te = TExp.month(3,4)
 
@@ -57,7 +57,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+62
   end
 
-  def test_month_builder_with_string_months
+  def test_month_dsl_with_string_months
     date = d("Jan 1, 2008")
     te = TExp.month("January", :feb)
 
@@ -65,7 +65,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+60
   end
 
-  def test_year_builder
+  def test_year_dsl
     date = d("Mar 12, 2008")
     te = TExp.year(2008)
 
@@ -73,7 +73,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+365
   end
 
-  def test_year_builder_with_list
+  def test_year_dsl_with_list
     date = d("Mar 12, 2008")
     te = TExp.year(2008, 2009)
 
@@ -81,7 +81,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-365, date + 2*365
   end
 
-  def test_on_builder_with_day_month
+  def test_on_dsl_with_day_month
     date = d("Mar 12, 2008")
     te = TExp.on(12, 3)
 
@@ -89,7 +89,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-1, date+1, date+31
   end
 
-  def test_on_builder_with_day_and_string_month
+  def test_on_dsl_with_day_and_string_month
     date = d("Mar 12, 2008")
     te = TExp.on(12, "Mar")
 
@@ -97,7 +97,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-1, date+1, date+31
   end
 
-  def test_on_builder_with_string_date
+  def test_on_dsl_with_string_date
     date = d("Mar 12, 2008")
     te = TExp.on("Mar 12, 2008")
 
@@ -105,7 +105,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-1, date+1, date+31, date+365
   end
 
-  def test_on_builder_with_date
+  def test_on_dsl_with_date
     date = d("Mar 12, 2008")
     te = TExp.on(date)
 
@@ -113,7 +113,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-1, date+1, date+31, date+365
   end
 
-  def test_on_builder_with_day_month_year
+  def test_on_dsl_with_day_month_year
     date = d("Mar 12, 2008")
     te = TExp.on(12, 3, 2008)
 
@@ -121,7 +121,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-1, date+1, date+31, date+365
   end
 
-  def test_on_builder_with_day_string_month_and_year
+  def test_on_dsl_with_day_string_month_and_year
     date = d("Mar 12, 2008")
     te = TExp.on(12, "March", 2008)
 
@@ -129,7 +129,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-1, date+1, date+31, date+365
   end
 
-  def test_on_builder_with_time
+  def test_on_dsl_with_time
     date = Date.today
     te = TExp.on(Time.now)
 
@@ -137,7 +137,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-1, date+1, date+31, date+365
   end
 
-  def test_on_builder_arbitrary_to_string
+  def test_on_dsl_arbitrary_to_string
     obj = Object.new
     def obj.to_s
       "Nov 18, 1956"
@@ -150,7 +150,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-1, date+1, date+31, date+365
   end
 
-  def test_on_builder_with_invalid_arguments
+  def test_on_dsl_with_invalid_arguments
     assert_raises(ArgumentError) do TExp.on(1) end
     assert_raises(ArgumentError) do TExp.on(1,2,3,4) end
     assert_raises(ArgumentError) do TExp.on(nil, nil) end
@@ -166,7 +166,7 @@ class BuilderTest < Minitest::Test
     assert_raises(ArgumentError) do TExp.on(1, 'nox', 2008) end
   end
 
-  def test_dow_builder
+  def test_dow_dsl
     date = d("Mar 4, 2008")
     [
       TExp.dow(2),
@@ -178,7 +178,7 @@ class BuilderTest < Minitest::Test
     end
   end
 
-  def test_dow_builder_with_lists
+  def test_dow_dsl_with_lists
     date = d("Mar 3, 2008")
     [
       TExp.dow(1, 3, 5),
@@ -190,7 +190,7 @@ class BuilderTest < Minitest::Test
     end
   end
 
-  def test_interval_builder_with_days
+  def test_interval_dsl_with_days
     date = d("Mar 1, 2008")
     te = TExp.every(3, :days).reanchor(date)
 
@@ -198,7 +198,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-3, date-2, date-1, date+1, date+2, date+4
   end
 
-  def test_interval_builder_with_weeks
+  def test_interval_dsl_with_weeks
     date = d("Mar 1, 2008")
     te = TExp.every(3, :weeks).reanchor(date)
 
@@ -207,7 +207,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+1*7, date+2*7, date+4*7
   end
 
-  def test_interval_builder_with_months
+  def test_interval_dsl_with_months
     date = d("Mar 1, 2008")
     te = TExp.every(3, :months).reanchor(date)
 
@@ -216,7 +216,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+1*30, date+2*30, date+4*30
   end
 
-  def test_interval_builder_with_years
+  def test_interval_dsl_with_years
     date = d("Mar 1, 2008")
     te = TExp.every(3, :years).reanchor(date)
 
@@ -225,7 +225,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date+1*365, date+2*365, date+4*365
   end
 
-  def test_window_builder
+  def test_window_dsl
     date = Date.today
     te = TExp.on(date).window(1,2)
 
@@ -233,7 +233,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-2, date+3
   end
 
-  def test_window_builder_with_symetrical_sides
+  def test_window_dsl_with_symetrical_sides
     date = Date.today
     te = TExp.on(date).window(2)
 
@@ -241,7 +241,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-3, date+3
   end
 
-  def test_window_builder_with_units
+  def test_window_dsl_with_units
     date = Date.today
     te = TExp.on(date).window(1, :week)
 
@@ -249,7 +249,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-8, date+8
   end
 
-  def test_window_builder_with_asymetrical_units
+  def test_window_dsl_with_asymetrical_units
     date = Date.today
     te = TExp.on(date).window(1, :week, 3, :days)
 
@@ -257,7 +257,7 @@ class BuilderTest < Minitest::Test
     assert_not_includes te, date-8, date+4
   end
 
-  def test_window_builder_with_bad_units
+  def test_window_dsl_with_bad_units
     assert_raises ArgumentError do
       te = TExp.on(Date.today).window(1, nil)
     end
