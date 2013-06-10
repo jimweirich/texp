@@ -41,56 +41,93 @@ can combine them into a single holiday expression thusly:
 * User expandable with custom temporal expression types, that
   interoperates with the compact, parsable encoding.
 
+* A DSL that allows the easy construction of Temporal Expressions.
+
 == Examples
+
+The examples below use the TExp DSL for easy creation of temporal
+expressions. The DSL methods are not globally available by default. To
+use them, do one of the following:
+
+* Use the global +texp+ method with a block:
+
+    te = texp { day(1) * month("Jan") }
+
+* Include the TExp::DSL module into your class:
+
+    include TExp::DSL
+    te = day(1) * month("Jan")
+
+See the TExp::DSL module for a complete description of all the DSL
+commands.
 
 === Match any Monday
 
+  te = dow(:monday)
+  te.includes?(Date.parse("Mar 3, 2008"))    # => true
+  te.includes?(Date.parse("Mar 4, 2008"))    # => false
+  te.includes?(Date.parse("Mar 10, 2008"))   # => true
+
+  # Equivalent to:
   te = TExp::DayOfWeek.new(Date::DAYNAMES.index("Monday"))
-  te.include?(Date.parse("Mar 3, 2008"))    # => true
-  te.include?(Date.parse("Mar 4, 2008"))    # => false
-  te.include?(Date.parse("Mar 10, 2008"))   # => true
+
+  # Variants:
+  dow("Mon", "Tues")     # on Monday or Tuesday
 
 === Match any date in March
 
-   te = TExp::Month.new(3)
-   te.include?(Date.parse("Mar 1, 2008"))   # => true
-   te.include?(Date.parse("Mar 31, 2008"))  # => true
-   te.include?(Date.parse("Mar 15, 1995"))   # => true
+  te = month(:march)
+  te.includes?(Date.parse("Mar 1, 2008"))    # => true
+  te.includes?(Date.parse("Mar 31, 2008"))   # => true
+  te.includes?(Date.parse("Mar 15, 1995"))   # => true
+  te.includes?(Date.parse("Feb 28, 2008"))   # => false
 
-   te.include?(Date.parse("Feb 28, 2008"))   # => false
+  # Equivalent to:
+  te = TExp::Month.new(3)
+
+  # Variants:
+  month(1,2,3)         # the month is January, February or March
+  month("Nov", "Dec")  # the month is November or December
 
 === Match Valentine's day (any year)
 
+  te = day(14) * month("Feb")
+
+  te.includes?(Date.parse("Feb 14, 2008"))  # => true
+  te.includes?(Date.parse("Feb 14, 2007"))  # => true
+
+  # Equivalent to:
   te = TExp::And.new(
          TExp::DayOfMonth.new(14),
          TExp::Month.new(2))
 
-   te.include?(Date.parse("Feb 14, 2008"))  # => true
-   te.include?(Date.parse("Feb 14, 2007"))  # => true
-
-
 === Match Valentine's day in 2008
 
+  te = day(14) * month("Feb") * year(2008)
+
+  te.includes?(Date.parse("Feb 14, 2008"))  # => true
+  te.includes?(Date.parse("Feb 14, 2007"))  # => false
+
+  # Equivalent to:
   te = TExp::And.new(
          TExp::DayOfMonth.new(14),
          TExp::Month.new(2),
          TExp::Year.new(2008))
 
-   te.include?(Date.parse("Feb 14, 2008"))  # => true
-   te.include?(Date.parse("Feb 14, 2007"))  # => false
-
 === Match any Monday in March
 
-   te = TExp::And.new(
-          TExp::Month.new(3),
-          TExp::DayOfWeek.new(Date::DAYNAMES.index("Monday")))
+  te = dow("Monday") * month("March")
 
-   te.include?(Date.parse("Mar 3, 2008"))    # => true
-   te.include?(Date.parse("Mar 10, 2008"))   # => true
+  te.includes?(Date.parse("Mar 3, 2008"))    # => true
+  te.includes?(Date.parse("Mar 10, 2008"))   # => true
 
-   te.include?(Date.parse("Mar 11, 2008"))   # => false
-   te.include?(Date.parse("Apr 7, 2008"))    # => false
+  te.includes?(Date.parse("Mar 11, 2008"))   # => false
+  te.includes?(Date.parse("Apr 7, 2008"))    # => false
 
+  # Equivalent to:
+  te = TExp::And.new(
+         TExp::Month.new(3),
+         TExp::DayOfWeek.new(Date::DAYNAMES.index("Monday")))
 
 == Links
 
