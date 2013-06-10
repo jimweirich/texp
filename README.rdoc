@@ -91,6 +91,11 @@ commands.
 
 === Match Valentine's day (any year)
 
+If you think of a temporal expression as a set of dates, then we can
+combine those sets in interesting ways. For example, the "*" operator
+will create an intersection of two sets of dates, matching only dates
+that match _both_ expressions.
+
   te = day(14) * month("Feb")
 
   te.includes?(Date.parse("Feb 14, 2008"))  # => true
@@ -114,23 +119,31 @@ commands.
          TExp::Month.new(2),
          TExp::Year.new(2008))
 
-=== Match any Monday in March
+=== Match Multiple Days
 
-  te = dow("Monday") * month("March")
+In addition to intersection, we can also ask for the union of the
+dates of two temporal expressions. Here we build a temporal expression
+that will match Christmas or New Year's day.
 
-  te.includes?(Date.parse("Mar 3, 2008"))    # => true
-  te.includes?(Date.parse("Mar 10, 2008"))   # => true
+  christmas = day(25) * month("Dec")
+  new_years = day(1) * month("Jan")
 
-  te.includes?(Date.parse("Mar 11, 2008"))   # => false
-  te.includes?(Date.parse("Apr 7, 2008"))    # => false
+  holidays = christmas + new_years
+
+  holidays.includes?(Date.parse("Jan 1, 2008"))   # => true
+  holidays.includes?(Date.parse("Dec 25, 2008"))  # => true
+  holidays.includes?(Date.parse("Jan 1, 2009"))   # => true
+
+  holidays.includes?(Date.parse("Feb 14, 2008"))  # => false
 
   # Equivalent to:
-  te = TExp::And.new(
-         TExp::Month.new(3),
-         TExp::DayOfWeek.new(Date::DAYNAMES.index("Monday")))
+  holidays = TExp::Or.new(
+    TExp::And.new( TExp::DayOfMonth.new(25), TExp::Month(12) ),
+    TExp::And.new( TExp::DayOfMonth.new(1),  TExp::Month(1)  ))
 
 == Links
 
 Documents   :: http://github.com/jimweirich/texp
+DSL Writeup :: https://github.com/jimweirich/texp/blob/master/lib/texp/dsl.rb
 Git Clone   :: git://github.com/jimweirich/texp.git
 Issues/Bugs ::  https://github.com/jimweirich/texp/issues
