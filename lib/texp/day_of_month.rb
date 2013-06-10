@@ -1,5 +1,5 @@
 module TExp
-  class DayOfMonth < Base
+  class DayOfMonth < Expression
     register_parse_callback('d')
 
     def initialize(days)

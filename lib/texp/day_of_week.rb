@@ -1,5 +1,5 @@
 module TExp
-  class DayOfWeek < Base
+  class DayOfWeek < Expression
     attr_reader :days
 
     register_parse_callback('w')

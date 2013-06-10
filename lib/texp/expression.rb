@@ -6,7 +6,7 @@ module TExp
 
   ####################################################################
   # Abstract Base class for all Texp Temporal Expressions.
-  class Base
+  class Expression
     include Enumerable
 
     # Convert the temporal expression into an encoded string (that can
@@ -116,7 +116,7 @@ module TExp
         codes << "["
         prev = nil
         list.each do |item|
-          codes << "," if prev && ! prev.kind_of?(TExp::Base)
+          codes << "," if prev && ! prev.kind_of?(TExp::Expression)
           codes << item.to_s
           prev = item
         end
@@ -225,7 +225,7 @@ module TExp
   ####################################################################
   # Base class for temporal expressions with a single sub-expressions
   # (i.e. term).
-  class SingleTermBase < Base
+  class SingleTermBase < Expression
     # Create a single term temporal expression.
     def initialize(term)
       @term = term
@@ -249,7 +249,7 @@ module TExp
   ####################################################################
   # Base class for temporal expressions with multiple sub-expressions
   # (i.e. terms).
-  class MultiTermBase < Base
+  class MultiTermBase < Expression
 
     # Create an multi-term temporal expression.
     def initialize(*terms)

@@ -1,5 +1,5 @@
 module TExp
-  class DayInterval < Base
+  class DayInterval < Expression
     register_parse_callback('i')
 
     attr_reader :base_date, :interval

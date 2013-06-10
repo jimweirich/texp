@@ -1,5 +1,5 @@
 module TExp
-  class EveryDay < Base
+  class EveryDay < Expression
     register_parse_callback('e')
 
     # Is +date+ included in the temporal expression.

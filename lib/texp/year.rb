@@ -1,5 +1,5 @@
 module TExp
-  class Year < Base
+  class Year < Expression
     register_parse_callback('y')
 
     def initialize(years)
@@ -21,6 +21,6 @@ module TExp
       encode_list(codes, @years)
       codes << encoding_token
     end
-    
+
   end
 end

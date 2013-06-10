@@ -1,5 +1,5 @@
 module TExp
-  class Month < Base
+  class Month < Expression
     register_parse_callback('m')
 
     def initialize(months)

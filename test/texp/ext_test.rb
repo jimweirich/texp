@@ -9,14 +9,14 @@ module TExp
     # This will help avoid collisions with with other extensions.
     module MyExt
 
-      # Create a Temporal Expression class.  Inheriting from
-      # TExp::Base allows you to reuse some common functionality
-      # defined there.  Other choices are:
+      # Create a Temporal Expression class. Inheriting from
+      # TExp::Expression allows you to reuse some common functionality
+      # defined there. Other choices are:
       #
       # (1) TExp::TermsBase -- Defines a parsing method for handling
       #     lists of temporal expressions as argument lists.
       #
-      class Never < Base
+      class Never < Expression
 
         # Register your parsing token.  Include your namespace as part
         # of the token to avoid naming collisions with other
@@ -33,7 +33,7 @@ module TExp
         # encoder should push tokens onto +codes+ in a manner that
         # your +parse_handler+ can handle them.  Remember that the
         # temporal expressions mini-language is a stack machine that
-        # pushs arguments onto the stack before your parse handler
+        # pushes arguments onto the stack before your parse handler
         # sees them.
         def encode(codes)
           codes << "<MyExt::never>"

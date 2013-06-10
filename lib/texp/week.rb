@@ -1,7 +1,7 @@
 require 'date'
 
 module TExp
-  class Week < Base
+  class Week < Expression
     register_parse_callback('k')
 
     def initialize(weeks)

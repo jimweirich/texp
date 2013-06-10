@@ -1,5 +1,5 @@
 module TExp
-  class Base
+  class Expression
 
     # Combine two temporal expressions so that the result will match
     # the union of the dates matched by the individual temporal
@@ -45,7 +45,7 @@ module TExp
     # <b>Examples:</b>
     #
     #    -dow(:mon)    # Match everything but Mondays
-    #    
+    #
     def -@()
       TExp::Not.new(self)
     end
