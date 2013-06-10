@@ -198,6 +198,13 @@ class DslTest < Minitest::Test
     assert_not_includes te, date-3, date-2, date-1, date+1, date+2, date+4
   end
 
+  def test_interval_dsl_with_days_and_string_date
+    te = TExp.every(3, :days, "Mar 1, 2008")
+    date = Date.parse("Mar 1, 2008")
+    assert_includes te, date, date+3, date+6
+    assert_not_includes te, date-3, date-2, date-1, date+1, date+2, date+4
+  end
+
   def test_interval_dsl_with_weeks
     date = d("Mar 1, 2008")
     te = TExp.every(3, :weeks).reanchor(date)

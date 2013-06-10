@@ -22,6 +22,17 @@ class DayIntervalTest < Minitest::Test
     assert_equal "0,3i", TExp.parse("0,3i").to_s
   end
 
+  def test_day_interval_with_start_date
+    date = Date.parse("Feb 10, 2008")
+    te = TExp::DayInterval.new(date, 3)
+
+    assert_includes te, date, date+3
+    assert_not_includes te, date-1, date+1, date+2, date+4
+
+    assert_equal "2008-02-10,3i", te.to_s
+    assert_equal "2008-02-10,3i", TExp.parse("2008-02-10,3i").to_s
+  end
+
   def test_day_interval_excludes_dates_before_start
     date = d("Mar 1, 2008")
     te = TExp::DayInterval.new(date, 3)
