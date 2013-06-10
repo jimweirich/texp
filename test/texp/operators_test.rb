@@ -1,9 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'test/unit'
-require 'texp'
-
-class OperatorsTest < Test::Unit::TestCase
+class OperatorsTest < Minitest::Test
   def setup
     @monday    = Date.parse("Mar 3, 2008")
     @tuesday   = Date.parse("Mar 4, 2008")

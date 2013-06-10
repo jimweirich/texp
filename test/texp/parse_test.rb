@@ -1,16 +1,20 @@
-#!/usr/bin/env ruby
-
-require 'test/unit'
-require 'date'
-require 'texp'
-require 'flexmock/test_unit'
+require 'test_helper'
 
 ######################################################################
-class TExpParseLexicalTest < Test::Unit::TestCase
+class TExpParseLexicalTest < Minitest::Test
+  XTEXP = class << TExp; self; end
+
   def setup
+    @compile_method = TExp.method(:compile)
     @tokens = []
-    flexmock(TExp).should_receive(:compile).with(any).
-      and_return { |tok| @tokens << tok }
+    tk = @tokens
+    XTEXP.send(:define_method, :compile) { |tok|
+      tk << tok
+    }
+  end
+
+  def teardown
+    XTEXP.send(:define_method, :compile, @compile_method)
   end
 
   def test_letters
@@ -49,7 +53,7 @@ class TExpParseLexicalTest < Test::Unit::TestCase
     '[', '[', '2008', 'y', '2', 'm', '14', 'd', ']', 'a', '12', 'm',
     '[', '1', '15', ']', 'd', '2008-02-14', '3', 'i', ']', 'o'
   ]
-  
+
   def test_mixed
     assert_lex "[[2008y2m14d]a12m[1,15]d2008-02-14,3i]o", *EXPECTED
   end
@@ -68,25 +72,25 @@ end
 
 
 ######################################################################
-class ParseTest < Test::Unit::TestCase
+class ParseTest < Minitest::Test
   def setup
     @date = Date.parse("Feb 14, 2008")
   end
 
   def test_bad_parse_string
-    assert_raise TExp::ParseError do
+    assert_raises TExp::ParseError do
       TExp.parse("(1,2)d")
     end
   end
 
   def test_unbalanced_list
-    assert_raise TExp::ParseError do
+    assert_raises TExp::ParseError do
       TExp.parse("[1")
     end
   end
 
   def test_unbalanced_list2
-    assert_raise TExp::ParseError do
+    assert_raises TExp::ParseError do
       TExp.parse("1]")
     end
   end
@@ -197,7 +201,7 @@ class ParseTest < Test::Unit::TestCase
 end
 
 ######################################################################
-class ParseReverseTest < Test::Unit::TestCase
+class ParseReverseTest < Minitest::Test
   def setup
     @date = Date.parse("Feb 14, 2008")
   end
@@ -230,4 +234,3 @@ class ParseReverseTest < Test::Unit::TestCase
     assert_equal string, te.to_s
   end
 end
-

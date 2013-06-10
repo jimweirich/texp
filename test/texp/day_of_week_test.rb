@@ -1,10 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'date'
-require 'test/unit'
-require 'texp'
-
-class DayOfWeekTest < Test::Unit::TestCase
+class DayOfWeekTest < Minitest::Test
 
   def test_day_of_week_include_with_one_day
     te = TExp::DayOfWeek.new([1])
@@ -28,4 +24,3 @@ class DayOfWeekTest < Test::Unit::TestCase
     assert ! te.includes?(Date.parse("Feb 16, 2008"))
   end
 end
-

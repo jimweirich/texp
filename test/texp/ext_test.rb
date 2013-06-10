@@ -1,8 +1,4 @@
-#!/usr/bin/env ruby
-
-require 'test/unit'
-require 'date'
-require 'texp'
+require 'test_helper'
 
 module TExp
 
@@ -64,7 +60,7 @@ module TExp
   end # module Extensions
 end # module TExp
 
-class ExtensionsTest < Test::Unit::TestCase
+class ExtensionsTest < Minitest::Test
   def test_never
     te = TExp::Extensions::MyExt::Never.new
     assert ! te.includes?(Date.today)
@@ -79,4 +75,3 @@ class ExtensionsTest < Test::Unit::TestCase
     assert_equal "<MyExt::never>", TExp.parse("<MyExt::never>").to_s
   end
 end
-

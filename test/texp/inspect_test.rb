@@ -1,13 +1,7 @@
-#!/usr/bin/env ruby
-
-require 'rubygems'
-require 'test/unit'
-require 'date'
-require 'texp'
-require 'flexmock/test_unit'
+require 'test_helper'
 
 ######################################################################
-class InspectTest < Test::Unit::TestCase
+class InspectTest < Minitest::Test
   def test_inspect
     assert_inspect "e", "every day"
 

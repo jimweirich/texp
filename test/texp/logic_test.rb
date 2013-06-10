@@ -1,10 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'test/unit'
-require 'date'
-require 'texp'
-
-class LogicTest < Test::Unit::TestCase
+class LogicTest < Minitest::Test
 
   DATE = Date.parse("Feb 14, 2008")
   LEFT = TExp::DayInterval.new(DATE, 2)
@@ -48,4 +44,3 @@ class LogicTest < Test::Unit::TestCase
   end
 
 end
-

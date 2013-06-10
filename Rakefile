@@ -21,7 +21,7 @@ end
 namespace "test" do
   Rake::TestTask.new(:units) do |t|
     t.verbose = true
-    t.libs << "."
+    t.libs << "." << "test"
     t.test_files = FileList['test/**/*_test.rb']
   end
 end

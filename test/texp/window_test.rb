@@ -1,10 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'date'
-require 'test/unit'
-require 'texp'
-
-class WindowTest < Test::Unit::TestCase
+class WindowTest < Minitest::Test
 
   def test_window
     wed = TExp.parse("3w")
@@ -58,4 +54,3 @@ class WindowTest < Test::Unit::TestCase
   end
 
 end
-

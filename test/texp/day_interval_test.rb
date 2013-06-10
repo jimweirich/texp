@@ -1,8 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'test/texp_tests'
-
-class DayIntervalTest < Test::Unit::TestCase
+class DayIntervalTest < Minitest::Test
 
   def test_day_interval
     te = TExp::DayInterval.new(Date.parse("Feb 10, 2008"), 3)
@@ -31,4 +29,3 @@ class DayIntervalTest < Test::Unit::TestCase
     assert_not_includes te, date-3, date-2, date-1
   end
 end
-

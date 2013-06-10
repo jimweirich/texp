@@ -1,10 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'test/unit'
-require 'date'
-require 'texp'
-
-class YearTest < Test::Unit::TestCase
+class YearTest < Minitest::Test
 
   def setup
     @date = Date.parse("Feb 14, 2008")

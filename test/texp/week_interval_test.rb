@@ -1,8 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'test/texp_tests'
-
-class WeekIntervalTest < Test::Unit::TestCase
+class WeekIntervalTest < Minitest::Test
 
   def test_week_interval
     te = TExp::WeekInterval.new(Date.parse("Feb 10, 2008"), 1)
@@ -32,4 +30,3 @@ class WeekIntervalTest < Test::Unit::TestCase
     assert_not_includes te, date-3, date-2, date-1
   end
 end
-

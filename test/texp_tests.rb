@@ -1,5 +1,4 @@
-#require 'rubygems'
-require 'test/unit'
+require 'minitest/autorun'
 require 'texp'
 
 # Convenience method for parsing dates.
@@ -23,6 +22,6 @@ module TExpAssertions
   end
 end
 
-class Test::Unit::TestCase
+class Minitest::Test
   include TExpAssertions
 end

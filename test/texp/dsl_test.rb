@@ -1,7 +1,6 @@
-require 'test/texp_tests'
-require 'texp'
+require 'test_helper'
 
-class BuilderTest < Test::Unit::TestCase
+class BuilderTest < Minitest::Test
   def test_day_builder
     date = d("Mar 12, 2008")
     te = TExp.day(12)
@@ -152,19 +151,19 @@ class BuilderTest < Test::Unit::TestCase
   end
 
   def test_on_builder_with_invalid_arguments
-    assert_raise(ArgumentError) do TExp.on(1) end
-    assert_raise(ArgumentError) do TExp.on(1,2,3,4) end
-    assert_raise(ArgumentError) do TExp.on(nil, nil) end
-    assert_raise(ArgumentError) do TExp.on(0, 1) end
-    assert_raise(ArgumentError) do TExp.on(1, 0) end
-    assert_raise(ArgumentError) do TExp.on(32, 1) end
-    assert_raise(ArgumentError) do TExp.on(1, 13) end
-    assert_raise(ArgumentError) do TExp.on(0, 1, 2008) end
-    assert_raise(ArgumentError) do TExp.on(1, 0, 2008) end
-    assert_raise(ArgumentError) do TExp.on(32, 1, 2008) end
-    assert_raise(ArgumentError) do TExp.on(1, 13, 2008) end
-    assert_raise(ArgumentError) do TExp.on(1, 'nox') end
-    assert_raise(ArgumentError) do TExp.on(1, 'nox', 2008) end
+    assert_raises(ArgumentError) do TExp.on(1) end
+    assert_raises(ArgumentError) do TExp.on(1,2,3,4) end
+    assert_raises(ArgumentError) do TExp.on(nil, nil) end
+    assert_raises(ArgumentError) do TExp.on(0, 1) end
+    assert_raises(ArgumentError) do TExp.on(1, 0) end
+    assert_raises(ArgumentError) do TExp.on(32, 1) end
+    assert_raises(ArgumentError) do TExp.on(1, 13) end
+    assert_raises(ArgumentError) do TExp.on(0, 1, 2008) end
+    assert_raises(ArgumentError) do TExp.on(1, 0, 2008) end
+    assert_raises(ArgumentError) do TExp.on(32, 1, 2008) end
+    assert_raises(ArgumentError) do TExp.on(1, 13, 2008) end
+    assert_raises(ArgumentError) do TExp.on(1, 'nox') end
+    assert_raises(ArgumentError) do TExp.on(1, 'nox', 2008) end
   end
 
   def test_dow_builder
@@ -259,7 +258,7 @@ class BuilderTest < Test::Unit::TestCase
   end
 
   def test_window_builder_with_bad_units
-    assert_raise ArgumentError do
+    assert_raises ArgumentError do
       te = TExp.on(Date.today).window(1, nil)
     end
   end

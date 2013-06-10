@@ -1,7 +1,6 @@
-require 'test/unit'
-require 'texp'
+require 'test_helper'
 
-class BaseEachTest < Test::Unit::TestCase
+class BaseEachTest < Minitest::Test
   def test_each_on_base
     te = basic_texp
     assert_equal [te], te.collect { |t| t }
@@ -18,7 +17,7 @@ class BaseEachTest < Test::Unit::TestCase
   end
 
   def test_complains_about_include
-    assert_raise TExp::TExpIncludeError do
+    assert_raises TExp::TExpIncludeError do
       basic_texp.include? Date.parse("Feb 1, 2009")
     end
   end
@@ -39,7 +38,7 @@ class BaseEachTest < Test::Unit::TestCase
 
 end
 
-class BaseAnchorTest < Test::Unit::TestCase
+class BaseAnchorTest < Minitest::Test
   def test_setting_anchor_date
     start_date = Date.parse("Feb 10, 2008")
     te = TExp::DayInterval.new(start_date, 3)

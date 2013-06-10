@@ -1,10 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'test/unit'
-require 'date'
-require 'texp'
-
-class MonthTest < Test::Unit::TestCase
+class MonthTest < Minitest::Test
 
   def setup
     @date = Date.parse("Feb 14, 2008")
@@ -17,4 +13,3 @@ class MonthTest < Test::Unit::TestCase
     assert ! te.includes?(@date + 30)
   end
 end
-

@@ -26,7 +26,7 @@ module TExp
     def register_parse_callback(token, callback)
       PARSE_CALLBACKS[token] = callback
     end
-  
+
     # Return the temporal expression encoded by string.
     def parse(string)
       @stack = []
@@ -40,7 +40,7 @@ module TExp
     def parse_callbacks
       PARSE_CALLBACKS
     end
-    
+
     private
 
     # Compile the token into the current definition.
@@ -55,7 +55,7 @@ module TExp
         when /^[-+]?\d+$/
           @stack.push tok.to_i
         else
-          fail ParseError, "Unrecoginized TExp Token '#{tok}'"
+          fail ParseError, "Unrecognized TExp Token '#{tok}'"
         end
       end
     end
@@ -71,18 +71,18 @@ module TExp
       @callback.call(stack)
     end
   end
-  
+
   # List parsing handlers
-  
+
   # Mark the end of the list.
   MARK = :mark                  # :nodoc:
-  
+
   # Push a mark on the stack to start a list.
   register_parse_callback('[',
     ParseCallback.new do |stack|
       stack.push MARK
     end)
-  
+
   # Pop the stack and build a list until you find a mark.
   register_parse_callback(']',
     ParseCallback.new do |stack|

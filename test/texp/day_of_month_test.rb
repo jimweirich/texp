@@ -1,10 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'date'
-require 'test/unit'
-require 'texp'
-
-class DayOfMonthTest < Test::Unit::TestCase
+class DayOfMonthTest < Minitest::Test
 
   def test_day_of_month_with_single_arg
     te = TExp::DayOfMonth.new(14)
@@ -24,4 +20,3 @@ class DayOfMonthTest < Test::Unit::TestCase
     assert te.includes?(Date.parse("Feb 16, 2008"))
   end
 end
-

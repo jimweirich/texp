@@ -1,15 +1,8 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'test/unit'
-require 'date'
-
-require 'texp'
-
-class EveryDayTest < Test::Unit::TestCase
-
+class EveryDayTest < Minitest::Test
   def test_every_day
     te = TExp::EveryDay.new
     assert te.includes?(Date.parse("Feb 15, 2008"))
   end
 end
-

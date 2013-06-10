@@ -1,10 +1,6 @@
-#!/usr/bin/env ruby
+require 'test_helper'
 
-require 'date'
-require 'test/unit'
-require 'texp'
-
-class WeekTest < Test::Unit::TestCase
+class WeekTest < Minitest::Test
 
   def test_week_include_with_one_week
     te = TExp::Week.new([1])
@@ -55,4 +51,3 @@ class WeekTest < Test::Unit::TestCase
     assert_equal 31, te.send(:last_day_of_month, Date.parse("Dec 1, 2007"))
   end
 end
-
